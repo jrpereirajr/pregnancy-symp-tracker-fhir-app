@@ -1,0 +1,15 @@
+Set applicationName = "dc.apps.pregsymptracker.restapi"
+Set swagger = "/irisrun/repo/src/openapi/pregnancy-symptoms-tracker.json"
+ZW ##class(%REST.API).CreateApplication(applicationName, swagger, , .newApplication, .internalError)
+ZW newApplication
+ZW internalError
+
+zpm
+load /irisrun/repo
+test pregnancy-symp-tracker-fhir-app
+
+s features("addPing")=1 ZW  ##class(%REST.API).CreateApplication("dc.test","",.features,.newApp,.erros)
+
+ZW ##class(%REST.API).CreateApplication("dc.petstore","/irisrun/repo/src/openapi/petstore.json",,.newApp,.erros)
+ZW newApplication
+ZW internalError
