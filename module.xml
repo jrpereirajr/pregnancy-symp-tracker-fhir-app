@@ -9,9 +9,16 @@
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="dc.apps.pregsymptracker.PKG"/>
       <UnitTest Name="/src" Package="tests.unittest.dc.apps.pregsymptracker" Phase="test"/>
+      <CSPApplication CookiePath="/preg-symp-tracker" DefaultTimeout="900" DispatchClass="dc.apps.pregsymptracker.restapi.disp" MatchRoles=":%DB_USER" PasswordAuthEnabled="1" Recurse="1" ServeFiles="1" ServeFilesTimeout="3600" UnauthenticatedEnabled="0" Url="/preg-symp-tracker" UseSessionCookie="2"/>
       <Dependencies>
         <ModuleReference>
           <Name>sslclient</Name>
+          <Version>1.*</Version>
+        </ModuleReference>
+      </Dependencies>
+      <Dependencies>
+        <ModuleReference>
+          <Name>swagger-ui</Name>
           <Version>1.*</Version>
         </ModuleReference>
       </Dependencies>
