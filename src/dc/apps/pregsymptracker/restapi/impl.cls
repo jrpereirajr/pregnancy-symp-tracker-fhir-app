@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Created Nov 15, 2022 15:39:15
+/// Updated Nov 16, 2022 18:59:16
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -32,95 +32,13 @@ ClassMethod ReportSymptom(body As %DynamicObject) As %DynamicObject
 /// OpenAPI definition
 ClassMethod GetOpenAPISpec() As %Stream.Object
 {
-    //(Place business logic here)
     Do ..%SetStatusCode(200)
-    //Do ..%SetHeader(<name>,<value>)
-    //Quit (Place response here) ; response may be a string, stream or dynamic object
-    Return {
-        "swagger": "2.0",
-        "info": {
-            "title": "Pregnacy symptoms tracker",
-            "version": "1.0"
-        },
-        "host": "",
-        "basePath": "/preg-symp-tracker",
-        "schemes": [
-            "http",
-            "https"
-        ],
-        "paths": {
-            "/test": {
-                "get": {
-                    "description": "Test endpoint!",
-                    "operationId": "test",
-                    "parameters": [],
-                    "responses": {
-                        "200": {
-                            "description": "OK"
-                        }
-                    }
-                }
-            },
-            "/symptom": {
-                "post": {
-                    "operationId": "ReportSymptom",
-                    "security": [{
-                        "basicAuth": []
-                    }],
-                    "description": "Used for patients to report their symptoms",
-                    "consumes": [
-                        "application/json"
-                    ],
-                    "produces": [
-                        "application/json"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "body",
-                            "name": "body",
-                            "description": "Patient symptom report",
-                            "required": true,
-                            "schema": {
-                                "$ref": "#/definitions/Symptom"
-                            }
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "description": "OK"
-                        }
-                    }
-                }
-            },
-            "/_spec": {
-                "get": {
-                    "operationId": "GetOpenAPISpec",
-                    "description": "OpenAPI definition",
-                    "parameters": [],
-                    "responses": {
-                        "200": {
-                            "description": "OK"
-                        }
-                    }
-                }
-            }
-        },
-        "definitions": {
-            "Symptom": {
-                "type": "object",
-                "properties": {
-                    "patientReport": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "securityDefinitions": {
-            "basicAuth": {
-                "type": "basic"
-            }
-        }
-    }
+    Set xdataID = "dc.apps.pregsymptracker.restapi.spec||OpenAPI"
+    Set compiledXdata = ##class(%Dictionary.CompiledXData).%OpenId(xdataID)
+    Set tStream = compiledXdata.Data
+    If '$IsObject(tStream) Set tSC=%objlasterror Quit
+    Set dynObject = {}.%FromJSON(tStream)
+    Return dynObject.%ToJSON()
 }
 
 }
