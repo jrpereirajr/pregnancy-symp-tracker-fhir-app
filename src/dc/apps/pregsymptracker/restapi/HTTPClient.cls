@@ -39,10 +39,38 @@ Method GetApiKeyFromEnsCredentials() As %String
     Return apiKeyCredObj.Password
 }
 
-Method HttpGet(path As %String) As %Net.HttpResponse
+Method HTTPGet(pPath As %String) As %Net.HttpResponse
 {
     Do ..CreateRequest()
-    $$$TOE(st, ..Request.Get(path))
+    $$$TOE(st, ..Request.Get(pPath))
+    Set response = ..Request.HttpResponse
+    Return response
+}
+
+Method HTTPPost(pPath As %String, pBody As %DynamicObject)
+{
+    Do ..CreateRequest()
+    Do ..Request.EntityBody.Clear()
+    Do ..Request.EntityBody.Write(pBody.%ToJSON())
+    $$$TOE(st, ..Request.Post(pPath))
+    Set response = ..Request.HttpResponse
+    Return response
+}
+
+Method HTTPPut(pPath As %String, pBody As %DynamicObject)
+{
+    Do ..CreateRequest()
+    Do ..Request.EntityBody.Clear()
+    Do ..Request.EntityBody.Write(pBody.%ToJSON())
+    $$$TOE(st, ..Request.Put(pPath))
+    Set response = ..Request.HttpResponse
+    Return response
+}
+
+Method HTTPDelete(pPath As %String) As %Net.HttpResponse
+{
+    Do ..CreateRequest()
+    $$$TOE(st, ..Request.Delete(pPath))
     Set response = ..Request.HttpResponse
     Return response
 }
