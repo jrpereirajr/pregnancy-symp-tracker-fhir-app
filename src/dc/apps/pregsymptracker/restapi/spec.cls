@@ -14,6 +14,11 @@ XData OpenAPI [ MimeType = application/json ]
     "http",
     "https"
   ],
+  "securityDefinitions":{
+    "basicAuth":{
+      "type":"basic"
+    }
+  },
   "paths":{
     "/test":{
       "get":{
@@ -80,15 +85,32 @@ XData OpenAPI [ MimeType = application/json ]
     "Symptom":{
       "type":"object",
       "properties":{
-        "patientReport":{
-          "type":"string"
+        "code":{
+          "type":"object",
+          "properties":{
+            "coding":{
+              "type":"array",
+              "items":{
+                "type":"object",
+                "properties":{
+                  "system":{
+                    "type":"string",
+                    "example":"http://loinc.org"
+                  },
+                  "code":{
+                    "type":"string",
+                    "example":"45708-5"
+                  },
+                  "display":{
+                    "type":"string",
+                    "example":"Vomiting [Minimum Data Set]"
+                  }
+                }
+              }
+            }
+          }
         }
       }
-    }
-  },
-  "securityDefinitions":{
-    "basicAuth":{
-      "type":"basic"
     }
   }
 }
