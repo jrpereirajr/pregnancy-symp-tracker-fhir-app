@@ -7,7 +7,7 @@ Property Server As %String;
 
 Property Port As %String;
 
-Property UseHttps As %Boolean;
+Property UseHTTPS As %Boolean;
 
 Property SSLConfig As %String;
 
@@ -18,8 +18,8 @@ Method CreateRequest()
     Set ..Request = ##class(%Net.HttpRequest).%New()
     Set ..Request.Server = ..Server
     Set ..Request.Port = ..Port
-    Set ..Request.Https = ..UseHttps
-    If (..UseHttps) {
+    Set ..Request.Https = ..UseHTTPS
+    If (..UseHTTPS) {
         Do ..Request.SSLConfigurationSet(..SSLConfig)
     }
 }
@@ -47,7 +47,7 @@ Method HTTPGet(pPath As %String) As %Net.HttpResponse
     Return response
 }
 
-Method HTTPPost(pPath As %String, pBody As %DynamicObject)
+Method HTTPPost(pPath As %String, pBody As %DynamicObject) As %Net.HttpResponse
 {
     Do ..CreateRequest()
     Do ..Request.EntityBody.Clear()
@@ -57,7 +57,7 @@ Method HTTPPost(pPath As %String, pBody As %DynamicObject)
     Return response
 }
 
-Method HTTPPut(pPath As %String, pBody As %DynamicObject)
+Method HTTPPut(pPath As %String, pBody As %DynamicObject) As %Net.HttpResponse
 {
     Do ..CreateRequest()
     Do ..Request.EntityBody.Clear()

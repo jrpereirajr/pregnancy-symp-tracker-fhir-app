@@ -20,29 +20,16 @@ XData OpenAPI [ MimeType = application/json ]
     }
   },
   "paths":{
-    "/test":{
-      "get":{
-        "description":"Test endpoint!",
-        "operationId":"test",
-        "parameters":[
-        ],
-        "responses":{
-          "200":{
-            "description":"OK"
-          }
-        }
-      }
-    },
     "/symptom":{
       "post":{
-        "operationId":"ReportSymptom",
+        "operationId":"PostSymptom",
         "security":[
           {
             "basicAuth":[
             ]
           }
         ],
-        "description":"Used for patients to report their symptoms",
+        "description":"Used for patients report their symptoms",
         "consumes":[
           "application/json"
         ],
@@ -65,6 +52,151 @@ XData OpenAPI [ MimeType = application/json ]
             "description":"OK"
           }
         }
+      },
+      "get":{
+        "operationId":"GetSymptom",
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Retrieves a patient symptom",
+        "produces":[
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "in":"query",
+            "name":"id",
+            "required":true,
+            "type":"integer"
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"OK",
+            "examples":{
+              "application/json":{
+                "subject":{
+                  "reference":"Patient/1"
+                },
+                "code":{
+                  "coding":[
+                    {
+                      "system":"http://loinc.org",
+                      "code":"45708-5",
+                      "display":"Vomiting [Minimum Data Set]"
+                    }
+                  ]
+                },
+                "effectiveDateTime":"2022-11-19T22:36:00Z"
+              }
+            }
+          }
+        }
+      },
+      "put":{
+        "operationId":"PutSymptom",
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Edit a patient symptom",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "in":"query",
+            "name":"id",
+            "required":true,
+            "type":"integer"
+          },
+          {
+            "in":"body",
+            "name":"body",
+            "description":"Patient symptom report",
+            "required":true,
+            "schema":{
+              "$ref":"#/definitions/Symptom"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      },
+      "delete":{
+        "operationId":"DeleteSymptom",
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"",
+        "consumes":[
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "in":"query",
+            "name":"id",
+            "required":true,
+            "type":"integer"
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
+    "/symptoms":{
+      "get":{
+        "operationId":"GetSymptoms",
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Retrives patients symptoms",
+        "parameters":[
+        ],
+        "responses":{
+          "200":{
+            "description":"OK",
+            "examples":{
+              "application/json":[
+                {
+                  "subject":{
+                    "reference":"Patient/1"
+                  },
+                  "code":{
+                    "coding":[
+                      {
+                        "system":"http://loinc.org",
+                        "code":"45708-5",
+                        "display":"Vomiting [Minimum Data Set]"
+                      }
+                    ],
+                    "effectiveDateTime":"2022-11-19T22:36:00Z"
+                  }
+                }
+              ]
+            }
+          }
+        }
       }
     },
     "/_spec":{
@@ -85,6 +217,15 @@ XData OpenAPI [ MimeType = application/json ]
     "Symptom":{
       "type":"object",
       "properties":{
+        "subject":{
+          "type":"object",
+          "properties":{
+            "reference":{
+              "type":"string",
+              "example":"Patient/1"
+            }
+          }
+        },
         "code":{
           "type":"object",
           "properties":{
@@ -109,6 +250,10 @@ XData OpenAPI [ MimeType = application/json ]
               }
             }
           }
+        },
+        "effectiveDateTime":{
+          "type":"string",
+          "example":"2022-11-19T22:36:00Z"
         }
       }
     }

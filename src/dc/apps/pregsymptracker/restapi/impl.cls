@@ -1,32 +1,77 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 16, 2022 18:59:16
+/// Updated Nov 21, 2022 01:03:49
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
 /// If ExposeServerExceptions is true, then details of internal errors will be exposed.
 Parameter ExposeServerExceptions = 0;
 
-/// Test endpoint!
-ClassMethod test() As %Stream.Object
+ClassMethod CofingTest()
 {
-    //(Place business logic here)
-    Do ..%SetStatusCode(200)
-    //Do ..%SetHeader(<name>,<value>)
-    //Quit (Place response here) ; response may be a string, stream or dynamic object
-    Return $ZDT($Now(), 3)
+    Set ^restapi.FHIRaaSClient = {"config": {
+        "Server": "fhir.fkwlwiygbul2.static-test-account.isccloud.io",
+        "Port": 443,
+        "UseHTTPS": 1,
+        "SSLConfig": "default",
+        "APIKeyCred": "fhiraas-apikey"
+    }}.%ToJSON()
 }
 
-/// Used for patients to report their symptoms<br/>
-/// The method arguments hold values for:<br/>
-///     body, Patient symptom report<br/>
-ClassMethod ReportSymptom(body As %DynamicObject) As %DynamicObject
+ClassMethod GetFHIRaaSClient() As dc.apps.pregsymptracker.restapi.FHIRaaSClient
 {
-    //(Place business logic here)
-    //Do ..%SetStatusCode(<HTTP_status_code>)
-    //Do ..%SetHeader(<name>,<value>)
-    //Quit (Place response here) ; response may be a string, stream or dynamic object
-    Set returnObject = body
-    Return returnObject
+    Set config = {}.%FromJSON($GET(^restapi.FHIRaaSClient, "{}")).config
+    If ('config) {
+        Throw ##class(%Exception.General).%New("No config found in ^restapi.FHIRaaSClient global; check out the method ConfigTest() for details.")
+    }
+    
+    Set fhiraasClient = ##class(dc.apps.pregsymptracker.restapi.FHIRaaSClient).%New()
+    Set fhiraasClient.Server = config.Server
+    Set fhiraasClient.Port = config.Port
+    Set fhiraasClient.UseHTTPS = config.UseHTTPS
+    Set fhiraasClient.SSLConfig = config.SSLConfig
+    Set fhiraasClient.APIKeyCred = config.APIKeyCred
+    Return fhiraasClient
+}
+
+ClassMethod CopyHeaders(pFHIRResponse As %Net.HttpResponse)
+{
+    Set header = ""
+    Do {
+        Set header = pFHIRResponse.GetNextHeader(header)
+        Do:(header '= "") ..%SetHeader(header, pFHIRResponse.Headers(header))
+    } While (header '= "")
+}
+
+ClassMethod FHIRaaSCall(pMethod As %String, pArgs...)
+{
+    #Dim response As %Net.HttpResponse 
+    Set fhiraasClient = ..GetFHIRaaSClient()
+    Set response = $METHOD(fhiraasClient, pMethod, pArgs...)
+    Do ..%SetStatusCode(response.StatusCode)
+    Do ..CopyHeaders(response)
+    Return response.Data
+}
+
+ClassMethod GetObservationFromBody(body As %DynamicObject) As %DynamicObject
+{
+    Set observation = {
+        "resourceType":"Observation",
+        "status":"final",
+        "category":[
+            {
+                "text":"Signs and Symptoms"
+            }
+        ],
+        "code":{},
+        "subject":{
+            "reference":""
+        },
+        "effectiveDateTime":""
+    }
+    Set observation.code = body.code
+    Set observation.subject.reference = body.subject.reference
+    Set observation.effectiveDateTime = body.effectiveDateTime
+    Return observation
 }
 
 /// OpenAPI definition
@@ -39,6 +84,48 @@ ClassMethod GetOpenAPISpec() As %Stream.Object
     If '$IsObject(tStream) Set tSC=%objlasterror Quit
     Set dynObject = {}.%FromJSON(tStream)
     Return dynObject.%ToJSON()
+}
+
+/// Used for patients report their symptoms<br/>
+/// The method arguments hold values for:<br/>
+///     body, Patient symptom report<br/>
+ClassMethod PostSymptom(body As %DynamicObject) As %DynamicObject
+{
+    Set observation = ..GetObservationFromBody(body)
+    Return ..FHIRaaSCall("HTTPPost", "/Observation", observation)
+}
+
+/// Retrieves a patient symptom<br/>
+/// The method arguments hold values for:<br/>
+///     id<br/>
+ClassMethod GetSymptom(id As %Integer) As %DynamicObject
+{
+    Return ..FHIRaaSCall("HTTPGet", "/Observation/"_id)
+}
+
+/// Edit a patient symptom<br/>
+/// The method arguments hold values for:<br/>
+///     id<br/>
+///     body, Patient symptom report<br/>
+ClassMethod PutSymptom(id As %Integer, body As %DynamicObject) As %DynamicObject
+{
+    Set observation = ..GetObservationFromBody(body)
+    Set observation.id = id
+    Return ..FHIRaaSCall("HTTPPut", "/Observation/"_id, observation)
+}
+
+/// (provide functional description here)<br/>
+/// The method arguments hold values for:<br/>
+///     id<br/>
+ClassMethod DeleteSymptom(id As %Integer) As %Stream.Object
+{
+    Return ..FHIRaaSCall("HTTPDelete", "/Observation/"_id)
+}
+
+/// Retrives patients symptoms
+ClassMethod GetSymptoms() As %Stream.Object
+{
+    Return ..FHIRaaSCall("HTTPGet", "/Observation")
 }
 
 }
