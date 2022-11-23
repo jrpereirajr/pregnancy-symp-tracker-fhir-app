@@ -114,41 +114,41 @@ IRISAPP>zpm
 =============================================================================
 zpm:IRISAPP>load /irisrun/repo
 
-[dc-sample-template]    Reload START (/irisrun/repo/)
-[dc-sample-template]    Reload SUCCESS
-[dc-sample-template]    Module object refreshed.
-[dc-sample-template]    Validate START
-[dc-sample-template]    Validate SUCCESS
-[dc-sample-template]    Compile START
-[dc-sample-template]    Compile SUCCESS
-[dc-sample-template]    Activate START
-[dc-sample-template]    Configure START
-[dc-sample-template]    Configure SUCCESS
-[dc-sample-template]    MakeDeployed START
-[dc-sample-template]    MakeDeployed SUCCESS
-[dc-sample-template]    Activate SUCCESS
-zpm:IRISAPP>test dc-sample-template
+[pregnancy-symp-tracker-fhir-app]    Reload START (/irisrun/repo/)
+[pregnancy-symp-tracker-fhir-app]    Reload SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Module object refreshed.
+[pregnancy-symp-tracker-fhir-app]    Validate START
+[pregnancy-symp-tracker-fhir-app]    Validate SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Compile START
+[pregnancy-symp-tracker-fhir-app]    Compile SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Activate START
+[pregnancy-symp-tracker-fhir-app]    Configure START
+[pregnancy-symp-tracker-fhir-app]    Configure SUCCESS
+[pregnancy-symp-tracker-fhir-app]    MakeDeployed START
+[pregnancy-symp-tracker-fhir-app]    MakeDeployed SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Activate SUCCESS
+zpm:IRISAPP>test pregnancy-symp-tracker-fhir-app
 
-[dc-sample-template]    Reload START (/irisrun/repo/)
-[dc-sample-template]    Reload SUCCESS
-[dc-sample-template]    Module object refreshed.
-[dc-sample-template]    Validate START
-[dc-sample-template]    Validate SUCCESS
-[dc-sample-template]    Compile START
-[dc-sample-template]    Compile SUCCESS
-[dc-sample-template]    Activate START
-[dc-sample-template]    Configure START
-[dc-sample-template]    Configure SUCCESS
-[dc-sample-template]    MakeDeployed START
-[dc-sample-template]    MakeDeployed SUCCESS
-[dc-sample-template]    Activate SUCCESS
-[dc-sample-template]    Test STARTIt works!
+[pregnancy-symp-tracker-fhir-app]    Reload START (/irisrun/repo/)
+[pregnancy-symp-tracker-fhir-app]    Reload SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Module object refreshed.
+[pregnancy-symp-tracker-fhir-app]    Validate START
+[pregnancy-symp-tracker-fhir-app]    Validate SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Compile START
+[pregnancy-symp-tracker-fhir-app]    Compile SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Activate START
+[pregnancy-symp-tracker-fhir-app]    Configure START
+[pregnancy-symp-tracker-fhir-app]    Configure SUCCESS
+[pregnancy-symp-tracker-fhir-app]    MakeDeployed START
+[pregnancy-symp-tracker-fhir-app]    MakeDeployed SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Activate SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Test STARTIt works!
 
 Use the following URL to view the result:
 http://172.28.0.2:52773/csp/sys/%25UnitTest.Portal.Indices.cls?Index=1&$NAMESPACE=IRISAPP
 All PASSED
 
-[dc-sample-template]    Test SUCCESS
+[pregnancy-symp-tracker-fhir-app]    Test SUCCESS
 zpm:IRISAPP>
 ```
 

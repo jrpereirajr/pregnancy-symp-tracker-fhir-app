@@ -9,7 +9,7 @@ XData OpenAPI [ MimeType = application/json ]
     "title":"Pregnacy symptoms tracker",
     "version":"1.0"
   },
-  "basePath":"/preg-symp-tracker",
+  "basePath":"/csp/preg-symp-tracker/api",
   "schemes":[
     "http",
     "https"
@@ -88,7 +88,8 @@ XData OpenAPI [ MimeType = application/json ]
                       "code":"45708-5",
                       "display":"Vomiting [Minimum Data Set]"
                     }
-                  ]
+                  ],
+                  "text":"Vomiting"
                 },
                 "effectiveDateTime":"2022-11-19T22:36:00Z"
               }
@@ -170,7 +171,7 @@ XData OpenAPI [ MimeType = application/json ]
             ]
           }
         ],
-        "description":"Retrives patients symptoms",
+        "description":"Retrives current patient symptoms",
         "parameters":[
         ],
         "responses":{
@@ -190,8 +191,9 @@ XData OpenAPI [ MimeType = application/json ]
                         "display":"Vomiting [Minimum Data Set]"
                       }
                     ],
-                    "effectiveDateTime":"2022-11-19T22:36:00Z"
-                  }
+                    "text":"Vomiting"
+                  },
+                  "effectiveDateTime":"2022-11-19T22:36:00Z"
                 }
               ]
             }
@@ -248,6 +250,10 @@ XData OpenAPI [ MimeType = application/json ]
                   }
                 }
               }
+            },
+            "text":{
+              "type":"string",
+              "example":"Vomiting"
             }
           }
         },

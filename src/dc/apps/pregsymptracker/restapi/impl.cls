@@ -1,12 +1,12 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 21, 2022 01:03:49
+/// Updated Nov 22, 2022 23:40:06
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
 /// If ExposeServerExceptions is true, then details of internal errors will be exposed.
-Parameter ExposeServerExceptions = 0;
+Parameter ExposeServerExceptions = 1;
 
-ClassMethod CofingTest()
+ClassMethod ConfigTest()
 {
     Set ^restapi.FHIRaaSClient = {"config": {
         "Server": "fhir.fkwlwiygbul2.static-test-account.isccloud.io",
@@ -117,14 +117,17 @@ ClassMethod PutSymptom(id As %Integer, body As %DynamicObject) As %DynamicObject
 /// (provide functional description here)<br/>
 /// The method arguments hold values for:<br/>
 ///     id<br/>
+/// WARNING: This method's signature has changed.
 ClassMethod DeleteSymptom(id As %Integer) As %Stream.Object
 {
     Return ..FHIRaaSCall("HTTPDelete", "/Observation/"_id)
 }
 
-/// Retrives patients symptoms
+/// Retrives current patient symptoms
+/// WARNING: This method's signature has changed.
 ClassMethod GetSymptoms() As %Stream.Object
 {
+    // todo: pegar apenas as observações do paciente logado
     Return ..FHIRaaSCall("HTTPGet", "/Observation")
 }
 

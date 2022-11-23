@@ -1,0 +1,8 @@
+<html>
+    <body>
+        <h1>API example</h1>
+        <hr/>
+        <div id="divSymptoms"></div>
+        <script language="javascript" src="assets/js/apiexample.js"></script>
+    </body>
+</html>

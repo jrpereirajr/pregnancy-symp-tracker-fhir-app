@@ -6,7 +6,7 @@
       },
     "objectscript.conn" :{
       "active": true,
-      "ns": "USER",
+      "ns": "IRISAPP",
       "username": "_SYSTEM",
       "password": "SYS",
       "host": "localhost",
@@ -17,7 +17,7 @@
       },
       "links": {
         "UnitTest Portal": "${serverUrl}/csp/sys/%25UnitTest.Portal.Home.cls?$NAMESPACE=IRISAPP",
-        "API doc": "${serverUrl}/swagger-ui/index.html?url=http://localhost:64756/preg-symp-tracker/_spec"
+        "API doc": "${serverUrl}/swagger-ui/index.html?url=http://localhost:64756/csp/preg-symp-tracker/api/_spec"
       }
     }
 

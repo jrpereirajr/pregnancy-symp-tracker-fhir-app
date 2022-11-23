@@ -5,7 +5,7 @@
         "version": "1.0"
     },
     "host": "localhost:64756",
-    "basePath": "/preg-symp-tracker",
+    "basePath": "/csp/preg-symp-tracker/api",
     "schemes": [
         "http",
         "https"
@@ -82,7 +82,8 @@
                                             "code": "45708-5",
                                             "display": "Vomiting [Minimum Data Set]"
                                         }
-                                    ]
+                                    ],
+                                    "text": "Vomiting"
                                 },
                                 "effectiveDateTime": "2022-11-19T22:36:00Z"
                             }
@@ -161,7 +162,7 @@
                         "basicAuth": []
                     }
                 ],
-                "description": "Retrives patients symptoms",
+                "description": "Retrives current patient symptoms",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -180,8 +181,9 @@
                                                 "display": "Vomiting [Minimum Data Set]"
                                             }
                                         ],
-                                        "effectiveDateTime": "2022-11-19T22:36:00Z"
-                                    }
+                                        "text": "Vomiting"
+                                    },
+                                    "effectiveDateTime": "2022-11-19T22:36:00Z"
                                 }
                             ]
                         }
@@ -237,6 +239,10 @@
                                     }
                                 }
                             }
+                        },
+                        "text": {
+                            "type": "string",
+                            "example": "Vomiting"
                         }
                     }
                 },
