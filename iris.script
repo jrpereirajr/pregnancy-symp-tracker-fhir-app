@@ -10,8 +10,8 @@
 
     // create IRISAPP namespace
     do $SYSTEM.OBJ.Load("/home/irisowner/irisbuild/Installer.cls", "ck") 
-    set sc = ##class(App.Installer).setup() 
-
+    set sc = ##class(App.Installer).setup()
+    set sc = ##class(%Library.EnsembleMgr).EnableNamespace("IRISAPP")
 
     // load all the code of the project as a ZPM package
     zn "IRISAPP"
