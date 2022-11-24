@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 22, 2022 23:40:06
+/// Updated Nov 23, 2022 18:47:58
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -42,6 +42,15 @@ ClassMethod CopyHeaders(pFHIRResponse As %Net.HttpResponse)
     } While (header '= "")
 }
 
+ClassMethod GetObservationPath(pId As %String = "") As %String
+{
+    Set querystring = %request.CgiEnvs("QUERY_STRING")
+    Set path = "/Observation"
+    Set:(pId '= "") path = path_"/"_pId
+    Set:(querystring '= "") path = path_"?"_querystring
+    return path
+}
+
 ClassMethod FHIRaaSCall(pMethod As %String, pArgs...)
 {
     #Dim response As %Net.HttpResponse 
@@ -69,9 +78,16 @@ ClassMethod GetObservationFromBody(body As %DynamicObject) As %DynamicObject
         "effectiveDateTime":""
     }
     Set observation.code = body.code
-    Set observation.subject.reference = body.subject.reference
+    #; Set observation.subject.reference = body.subject.reference
+    Set observation.subject.reference = ..GetCurrentPatient()
     Set observation.effectiveDateTime = body.effectiveDateTime
     Return observation
+}
+
+ClassMethod GetCurrentPatient() As %String
+{
+    // todo:
+    Return "Patient/1"
 }
 
 /// OpenAPI definition
@@ -92,7 +108,7 @@ ClassMethod GetOpenAPISpec() As %Stream.Object
 ClassMethod PostSymptom(body As %DynamicObject) As %DynamicObject
 {
     Set observation = ..GetObservationFromBody(body)
-    Return ..FHIRaaSCall("HTTPPost", "/Observation", observation)
+    Return ..FHIRaaSCall("HTTPPost", ..GetObservationPath(), observation)
 }
 
 /// Retrieves a patient symptom<br/>
@@ -100,7 +116,7 @@ ClassMethod PostSymptom(body As %DynamicObject) As %DynamicObject
 ///     id<br/>
 ClassMethod GetSymptom(id As %Integer) As %DynamicObject
 {
-    Return ..FHIRaaSCall("HTTPGet", "/Observation/"_id)
+    Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath(id))
 }
 
 /// Edit a patient symptom<br/>
@@ -111,24 +127,22 @@ ClassMethod PutSymptom(id As %Integer, body As %DynamicObject) As %DynamicObject
 {
     Set observation = ..GetObservationFromBody(body)
     Set observation.id = id
-    Return ..FHIRaaSCall("HTTPPut", "/Observation/"_id, observation)
+    Return ..FHIRaaSCall("HTTPPut", ..GetObservationPath(id), observation)
 }
 
 /// (provide functional description here)<br/>
 /// The method arguments hold values for:<br/>
 ///     id<br/>
-/// WARNING: This method's signature has changed.
 ClassMethod DeleteSymptom(id As %Integer) As %Stream.Object
 {
-    Return ..FHIRaaSCall("HTTPDelete", "/Observation/"_id)
+    Return ..FHIRaaSCall("HTTPDelete", ..GetObservationPath(id))
 }
 
 /// Retrives current patient symptoms
-/// WARNING: This method's signature has changed.
 ClassMethod GetSymptoms() As %Stream.Object
 {
     // todo: pegar apenas as observações do paciente logado
-    Return ..FHIRaaSCall("HTTPGet", "/Observation")
+    Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath())
 }
 
 }

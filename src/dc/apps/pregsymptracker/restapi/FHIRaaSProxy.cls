@@ -55,7 +55,7 @@ ClassMethod SetResponse(pResponseData As %String)
 
 ClassMethod GetResponse() As %String
 {
-    Return ^restapi.FHIRaaSProxy(%session.SessionId)
+    Return $G(^restapi.FHIRaaSProxy(%session.SessionId))
 }
 
 ClassMethod GetFHIRaaSClient() As dc.apps.pregsymptracker.restapi.FHIRaaSClient

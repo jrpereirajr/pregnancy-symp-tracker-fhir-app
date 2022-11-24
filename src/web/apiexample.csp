@@ -1,8 +1,39 @@
 <html>
+    <head>
+        <style>
+            .div-field {
+                margin-top: 15px;
+            }
+        </style>
+    </head>
     <body>
         <h1>API example</h1>
         <hr/>
+
+        <div class="div-field">
+            <datalist id="symptomsList"></datalist>
+            <label for="symptomsSelector">Symptom:</label>
+            <input id="symptomsSelector" name="symptomsSelector" list="symptomsList"/>
+            <input id="genericSymptom" type="text" style="display:none;" placeholder="Complaint description here"/>
+            <label for="dateSymptom">Date/time:</label>
+            <input id="dateSymptom" type="date"/>
+            <input id="timeSymptom" type="time"/>
+            <button id="btnPostSymptom">Post</button>
+        </div>
+        <div class="div-field">
+            <label for="txtSymptomID">ID:</label>
+            <input id="txtSymptomID" type="text"/>
+            <button id="btnGetSymptom">Get</button>
+            <button id="btnPutSymptom">Put</button>
+            <button id="btnDeleteSymptom">Delete</button>
+        </div>
+        <div class="div-field">
+            <span id="msgBox"></span>
+        </div>
+        <hr/>
+
         <div id="divSymptoms"></div>
+
         <script language="javascript" src="assets/js/apiexample.js"></script>
     </body>
 </html>
