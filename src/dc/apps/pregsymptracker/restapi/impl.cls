@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 23, 2022 18:47:58
+/// Updated Nov 25, 2022 01:39:34
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -47,7 +47,8 @@ ClassMethod GetObservationPath(pId As %String = "") As %String
     Set querystring = %request.CgiEnvs("QUERY_STRING")
     Set path = "/Observation"
     Set:(pId '= "") path = path_"/"_pId
-    Set:(querystring '= "") path = path_"?"_querystring
+    Set path = path_"?patient="_..GetCurrentPatientId()
+    Set:(querystring '= "") path = path_"&"_querystring
     return path
 }
 
@@ -78,16 +79,15 @@ ClassMethod GetObservationFromBody(body As %DynamicObject) As %DynamicObject
         "effectiveDateTime":""
     }
     Set observation.code = body.code
-    #; Set observation.subject.reference = body.subject.reference
-    Set observation.subject.reference = ..GetCurrentPatient()
+    Set observation.subject.reference = "Patient/"_..GetCurrentPatientId()
     Set observation.effectiveDateTime = body.effectiveDateTime
     Return observation
 }
 
-ClassMethod GetCurrentPatient() As %String
+ClassMethod GetCurrentPatientId() As %String
 {
-    // todo:
-    Return "Patient/1"
+    // todo: bind to loggin
+    Return "1"
 }
 
 /// OpenAPI definition
@@ -111,7 +111,7 @@ ClassMethod PostSymptom(body As %DynamicObject) As %DynamicObject
     Return ..FHIRaaSCall("HTTPPost", ..GetObservationPath(), observation)
 }
 
-/// Retrieves a patient symptom<br/>
+/// Retrieves specific symptom from the logged patient<br/>
 /// The method arguments hold values for:<br/>
 ///     id<br/>
 ClassMethod GetSymptom(id As %Integer) As %DynamicObject
@@ -141,7 +141,6 @@ ClassMethod DeleteSymptom(id As %Integer) As %Stream.Object
 /// Retrives current patient symptoms
 ClassMethod GetSymptoms() As %Stream.Object
 {
-    // todo: pegar apenas as observações do paciente logado
     Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath())
 }
 

@@ -55,7 +55,7 @@
                         "basicAuth": []
                     }
                 ],
-                "description": "Retrieves a patient symptom",
+                "description": "Retrieves specific symptom from the logged patient",
                 "produces": [
                     "application/json"
                 ],
@@ -72,9 +72,6 @@
                         "description": "OK",
                         "examples": {
                             "application/json": {
-                                "subject": {
-                                    "reference": "Patient/1"
-                                },
                                 "code": {
                                     "coding": [
                                         {
@@ -170,9 +167,6 @@
                         "examples": {
                             "application/json": [
                                 {
-                                    "subject": {
-                                        "reference": "Patient/1"
-                                    },
                                     "code": {
                                         "coding": [
                                             {
@@ -208,15 +202,6 @@
         "Symptom": {
             "type": "object",
             "properties": {
-                "subject": {
-                    "type": "object",
-                    "properties": {
-                        "reference": {
-                            "type": "string",
-                            "example": "Patient/1"
-                        }
-                    }
-                },
                 "code": {
                     "type": "object",
                     "properties": {

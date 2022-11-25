@@ -61,7 +61,7 @@ XData OpenAPI [ MimeType = application/json ]
             ]
           }
         ],
-        "description":"Retrieves a patient symptom",
+        "description":"Retrieves specific symptom from the logged patient",
         "produces":[
           "application/json"
         ],
@@ -78,9 +78,6 @@ XData OpenAPI [ MimeType = application/json ]
             "description":"OK",
             "examples":{
               "application/json":{
-                "subject":{
-                  "reference":"Patient/1"
-                },
                 "code":{
                   "coding":[
                     {
@@ -180,9 +177,6 @@ XData OpenAPI [ MimeType = application/json ]
             "examples":{
               "application/json":[
                 {
-                  "subject":{
-                    "reference":"Patient/1"
-                  },
                   "code":{
                     "coding":[
                       {
@@ -219,15 +213,6 @@ XData OpenAPI [ MimeType = application/json ]
     "Symptom":{
       "type":"object",
       "properties":{
-        "subject":{
-          "type":"object",
-          "properties":{
-            "reference":{
-              "type":"string",
-              "example":"Patient/1"
-            }
-          }
-        },
         "code":{
           "type":"object",
           "properties":{
