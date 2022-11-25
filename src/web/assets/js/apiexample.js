@@ -346,8 +346,8 @@ const getSymptomDateTime = () => {
     let dateSymptom = document.getElementById("dateSymptom").value;
     let timeSymptom = document.getElementById("timeSymptom").value;
     dateSymptom = dateSymptom || new Date().toISOString().substring(0, 10)
-    timeSymptom = timeSymptom || new Date().toISOString().substring(11, 8)
-    return `${dateSymptom}T${timeSymptom}:00Z`;
+    timeSymptom = timeSymptom || new Date().toISOString().substring(11, 19)
+    return `${dateSymptom}T${timeSymptom}Z`;
 }
 
 const btnFirstOnClick = (evt) => {
