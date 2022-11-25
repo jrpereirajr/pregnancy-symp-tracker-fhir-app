@@ -22,8 +22,25 @@ document.getElementById("btnDeleteSymptom").onclick = (evt) => {
     btnDeleteSymptomOnClick(evt);
 }
 
+document.getElementById("btnFirst").onclick = (evt) => {
+    btnFirstOnClick(evt);
+}
+
+document.getElementById("btnPrevious").onclick = (evt) => {
+    btnPreviousOnClick(evt);
+}
+
+document.getElementById("btnNext").onclick = (evt) => {
+    btnNextOnClick(evt);
+}
+
+document.getElementById("btnLast").onclick = (evt) => {
+    btnLastOnClick(evt);
+}
+
 const BASE_URL = "/csp/preg-symp-tracker/api";
 const PAGE_SIZE = 10;
+const relationLinks = {};
 // todo: get via API
 const SYMPTOMS_OPTIONS = {
     "Vomiting": {
@@ -61,6 +78,8 @@ const SYMPTOMS_OPTIONS = {
 class FHIRSearchParams {
     _count;
     _sort;
+    page;
+    queryId;
 
     getSearchExpression() {
         let filter = [];
@@ -69,6 +88,12 @@ class FHIRSearchParams {
         }
         if (this._sort) {
             filter.push(`_sort=${this._sort}`);
+        }
+        if (this.page) {
+            filter.push(`page=${this.page}`);
+        }
+        if (this.queryId) {
+            filter.push(`queryId=${this.queryId}`);
         }
         return filter.join("&");
     }
@@ -175,13 +200,48 @@ const httpDelete = (url) => {
     });
 }
 
+const getRelationURL = (response, pRelationType) => {
+    const link = response.link.filter(link => link.relation === pRelationType)
+    return link.length > 0 ? link[0].url : "";
+}
+
+const getFHIRSearchParamsFromResponse = (response, pRelationType) => {
+    const fhirSearchParams = new FHIRSearchParams();
+
+    const url = getRelationURL(response, pRelationType);
+    const qs = url.split("?")[1];
+
+    if (!qs) return fhirSearchParams;
+
+    const params = qs.split("&");
+    params.forEach(param => {
+        param = param.split("=");
+        const paramKey = param[0];
+        const paramValue = param[1];
+        fhirSearchParams[paramKey] = paramValue;
+    });
+
+    return fhirSearchParams;
+}
+
+const getRelationsFHIRSearchParams = (response) => {
+    relationLinks.first = getFHIRSearchParamsFromResponse(response, "first");
+    relationLinks.previous = getFHIRSearchParamsFromResponse(response, "previous");
+    relationLinks.next = getFHIRSearchParamsFromResponse(response, "next");
+    relationLinks.last = getFHIRSearchParamsFromResponse(response, "last");
+    console.log(relationLinks);
+}
+
 const getSymptoms = (fhirSearchParams) => {
     const filter = fhirSearchParams ? `?${fhirSearchParams.getSearchExpression()}` : "";
     return httpGet(`${BASE_URL}/symptoms${filter}`)
         .then(response => response.json())
-        .then(response => Promise.resolve(
-            getCodeArrayFromObservation(response)
-        ));
+        .then(response => {
+            getRelationsFHIRSearchParams(response);
+            return Promise.resolve(
+                getCodeArrayFromObservation(response)
+            );
+        });
 }
 
 const getCodeArrayFromObservation = (observation) => {
@@ -225,13 +285,13 @@ const getSymptomDescription = (code) => code.text || code.coding[0].display;
 const drawSymptoms = (el, symptoms) => {
     el.innerHTML = `
     <table>
-        <tr><th colspan="999">${PAGE_SIZE} last symptoms</th></tr>
         <tr><td>ID</td><td>Description</td><td>Date/time</td></tr>
         ${symptoms.map(symptom =>
         `<tr><td>${symptom.id}</td><td>${getSymptomDescription(symptom.code)}</td><td>${symptom.effectiveDateTime}</td></tr>\n`
     ).join('')}
     </table>
     `;
+    drawNavLabel();
 }
 
 const createSymptomsList = () => {
@@ -241,15 +301,17 @@ const createSymptomsList = () => {
     );
 }
 
-const updateSymptomsGrid = () => {
+const updateSymptomsGrid = (fhirSearchParams) => {
     const divSymptoms = document.getElementById("divSymptoms");
-    const filter = new FHIRSearchParams();
+
+    const filter = fhirSearchParams ? fhirSearchParams : new FHIRSearchParams();
     filter._count = PAGE_SIZE;
     filter._sort = "-date";
     getSymptoms(filter).then(symptoms => {
         console.log(symptoms);
         drawSymptoms(divSymptoms, symptoms);
     }).catch((error) => defaultErrorhandling(error));
+
     drawLoading(divSymptoms, "Loading patient symptoms...");
 }
 
@@ -286,4 +348,27 @@ const getSymptomDateTime = () => {
     dateSymptom = dateSymptom || new Date().toISOString().substring(0, 10)
     timeSymptom = timeSymptom || new Date().toISOString().substring(11, 8)
     return `${dateSymptom}T${timeSymptom}:00Z`;
+}
+
+const btnFirstOnClick = (evt) => {
+    updateSymptomsGrid(relationLinks.first);
+}
+
+const btnPreviousOnClick = (evt) => {
+    updateSymptomsGrid(relationLinks.previous);
+}
+
+const btnNextOnClick = (evt) => {
+    updateSymptomsGrid(relationLinks.next);
+}
+
+const btnLastOnClick = (evt) => {
+    updateSymptomsGrid(relationLinks.last);
+}
+
+const drawNavLabel = () => {
+    const navLabel = document.getElementById("navLabel");
+    const currentPage = relationLinks.next.page ? 
+        parseInt(relationLinks.next.page) - 1 : parseInt(relationLinks.last.page)
+    navLabel.innerText = `Page ${currentPage}/${relationLinks.last.page}`;
 }

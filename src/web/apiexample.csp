@@ -32,7 +32,16 @@
         </div>
         <hr/>
 
-        <div id="divSymptoms"></div>
+        <div>
+            <div id="divSymptoms"></div>
+            <div>
+                <button id="btnFirst">First</button>
+                <button id="btnPrevious">Previous</button>
+                <button id="btnNext">Next</button>
+                <button id="btnLast">Last</button>
+                <span id="navLabel"></span>
+            </div>
+        </div>
 
         <script language="javascript" src="assets/js/apiexample.js"></script>
     </body>
