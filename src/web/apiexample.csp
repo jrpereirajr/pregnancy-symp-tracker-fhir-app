@@ -8,6 +8,9 @@
     </head>
     <body>
         <h1>API example</h1>
+        <h5>
+            #($USERNAME)# | <a href="/csp/preg-symp-tracker/apiexample.csp?IRISLogout=end">Logout</a>
+        </h5>
         <hr/>
 
         <div class="div-field">
