@@ -23,6 +23,9 @@ XData OpenAPI [ MimeType = application/json ]
     "/symptom":{
       "post":{
         "operationId":"PostSymptom",
+        "x-ISC_RequiredResource":[
+          "AppSymptoms:read"
+        ],
         "security":[
           {
             "basicAuth":[
@@ -55,6 +58,9 @@ XData OpenAPI [ MimeType = application/json ]
       },
       "get":{
         "operationId":"GetSymptom",
+        "x-ISC_RequiredResource":[
+          "AppSymptoms:read"
+        ],
         "security":[
           {
             "basicAuth":[
@@ -96,6 +102,9 @@ XData OpenAPI [ MimeType = application/json ]
       },
       "put":{
         "operationId":"PutSymptom",
+        "x-ISC_RequiredResource":[
+          "AppSymptoms:read"
+        ],
         "security":[
           {
             "basicAuth":[
@@ -134,6 +143,9 @@ XData OpenAPI [ MimeType = application/json ]
       },
       "delete":{
         "operationId":"DeleteSymptom",
+        "x-ISC_RequiredResource":[
+          "AppSymptoms:read"
+        ],
         "security":[
           {
             "basicAuth":[
@@ -162,6 +174,9 @@ XData OpenAPI [ MimeType = application/json ]
     "/symptoms":{
       "get":{
         "operationId":"GetSymptoms",
+        "x-ISC_RequiredResource":[
+          "AppSymptoms:read"
+        ],
         "security":[
           {
             "basicAuth":[
@@ -198,6 +213,9 @@ XData OpenAPI [ MimeType = application/json ]
     "/_spec":{
       "get":{
         "operationId":"GetOpenAPISpec",
+        "x-ISC_RequiredResource":[
+          "AppSymptoms:read"
+        ],
         "description":"OpenAPI definition",
         "parameters":[
         ],

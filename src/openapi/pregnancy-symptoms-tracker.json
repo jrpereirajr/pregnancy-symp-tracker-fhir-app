@@ -19,6 +19,7 @@
         "/symptom": {
             "post": {
                 "operationId": "PostSymptom",
+                "x-ISC_RequiredResource": ["AppSymptoms:read"],
                 "security": [
                     {
                         "basicAuth": []
@@ -50,6 +51,7 @@
             },
             "get": {
                 "operationId": "GetSymptom",
+                "x-ISC_RequiredResource": ["AppSymptoms:read"],
                 "security": [
                     {
                         "basicAuth": []
@@ -90,6 +92,7 @@
             },
             "put": {
                 "operationId": "PutSymptom",
+                "x-ISC_RequiredResource": ["AppSymptoms:read"],
                 "security": [
                     {
                         "basicAuth": []
@@ -127,6 +130,7 @@
             },
             "delete": {
                 "operationId": "DeleteSymptom",
+                "x-ISC_RequiredResource": ["AppSymptoms:read"],
                 "security": [
                     {
                         "basicAuth": []
@@ -154,6 +158,7 @@
         "/symptoms": {
             "get": {
                 "operationId": "GetSymptoms",
+                "x-ISC_RequiredResource": ["AppSymptoms:read"],
                 "security": [
                     {
                         "basicAuth": []
