@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 25, 2022 01:39:34
+/// Updated Nov 26, 2022 02:17:59
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -47,7 +47,7 @@ ClassMethod GetObservationPath(pId As %String = "") As %String
     Set querystring = %request.CgiEnvs("QUERY_STRING")
     Set path = "/Observation"
     Set:(pId '= "") path = path_"/"_pId
-    Set path = path_"?patient="_..GetCurrentPatientId()
+    Set path = path_"?patient=Patient/"_..GetCurrentPatientId()
     Set:(querystring '= "") path = path_"&"_querystring
     return path
 }
@@ -86,8 +86,8 @@ ClassMethod GetObservationFromBody(body As %DynamicObject) As %DynamicObject
 
 ClassMethod GetCurrentPatientId() As %String
 {
-    // todo: bind to loggin
-    Return "1"
+    Set userId = $USERNAME
+    Return ##class(dc.apps.pregsymptracker.data.FHIRRelation).GetFHIRResourceId(userId, "Patient")
 }
 
 /// OpenAPI definition

@@ -25,4 +25,6 @@ RUN --mount=type=bind,src=.,dst=. \
     ([ $TESTS -eq 0 ] || iris session iris -U $NAMESPACE "##class(%ZPM.PackageManager).Shell(\"test $MODULE -v -only\",1,1)") && \
     iris session iris -U IRISAPP "##class(Ens.Config.Credentials).SetCredential(\"fhiraas-apikey\",\"\",\"$FHIRAAS_APIKEY\")" && \
     iris session iris -U IRISAPP "##class(dc.apps.pregsymptracker.restapi.impl).ConfigTest()" && \
+    iris session iris -U IRISAPP "##class(dc.apps.pregsymptracker.util.Setup).Main()" && \
+    iris session iris -U IRISAPP "##class(dc.apps.pregsymptracker.util.Example).Main()" && \
     iris stop IRIS quietly
