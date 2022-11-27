@@ -31,7 +31,7 @@ The following InterSystems technologies was used in this project:
 
 Those technologies are used as depicted by the following diagram:
 
-![Application general architecture](W3U0DcpPRr.png)
+![Application general architecture](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/W3U0DcpPRr.png)
 
 The patient accesses the application using a web browser.
 
@@ -77,7 +77,7 @@ Where `Server` is your FHIR Server address and `APIKeyCred` is an IRIS Interoper
 
 You can create a credential using the IRIS portal >> Interoperability >> Credentials. Click on the New button, inform the credential ID and the FHIR Server API KEY in the Password field, then save by hiting the Save button.
 
-![IRIS Interoperability Credentials](qxDSg8Lk5o.png)
+![IRIS Interoperability Credentials](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/qxDSg8Lk5o.png)
 
 ## Installing using Docker
 
