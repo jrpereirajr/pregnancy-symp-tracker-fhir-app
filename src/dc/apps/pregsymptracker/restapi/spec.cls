@@ -210,12 +210,31 @@ XData OpenAPI [ MimeType = application/json ]
         }
       }
     },
-    "/_spec":{
+    "/symptoms-list":{
       "get":{
-        "operationId":"GetOpenAPISpec",
+        "operationId":"GetSymptomList",
         "x-ISC_RequiredResource":[
           "AppSymptoms:read"
         ],
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Retrieves a list with the Patient symptoms handled by the application",
+        "parameters":[
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
+    "/_spec":{
+      "get":{
+        "operationId":"GetOpenAPISpec",
         "description":"OpenAPI definition",
         "parameters":[
         ],

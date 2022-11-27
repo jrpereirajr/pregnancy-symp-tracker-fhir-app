@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 26, 2022 02:17:59
+/// Updated Nov 27, 2022 00:07:55
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -136,6 +136,45 @@ ClassMethod PutSymptom(id As %Integer, body As %DynamicObject) As %DynamicObject
 ClassMethod DeleteSymptom(id As %Integer) As %Stream.Object
 {
     Return ..FHIRaaSCall("HTTPDelete", ..GetObservationPath(id))
+}
+
+/// Retrieves a list with the Patient symptoms handled by the application
+ClassMethod GetSymptomList() As %Stream.Object
+{
+    Do ..%SetStatusCode(200)
+    Set symptomsList = {
+        "Vomiting": {
+            "coding": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "45708-5",
+                    "display": "Vomiting [Minimum Data Set]"
+                }
+            ],
+            "text": "Vomiting"
+        },
+        "Fever": {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "386661006",
+                    "display": "Fever (finding)"
+                }
+            ],
+            "text": "Fever"
+        },
+        "Generic complaint": {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "409586006",
+                    "display": "Complaint (finding)"
+                }
+            ],
+            "text": "Generic complaint"
+        }
+    }
+    Return symptomsList
 }
 
 /// Retrives current patient symptoms

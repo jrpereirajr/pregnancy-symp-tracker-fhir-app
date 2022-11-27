@@ -190,6 +190,24 @@
                 }
             }
         },
+        "/symptoms-list": {
+            "get": {
+                "operationId": "GetSymptomList",
+                "x-ISC_RequiredResource": ["AppSymptoms:read"],
+                "security": [
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "description": "Retrieves a list with the Patient symptoms handled by the application",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/_spec": {
             "get": {
                 "operationId": "GetOpenAPISpec",
