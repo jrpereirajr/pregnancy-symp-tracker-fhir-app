@@ -5,6 +5,7 @@ ClassMethod Main()
 {
     Do ..CreateResources()
     Do ..CreateRoles()
+    Do ##class(dc.apps.pregsymptracker.util.SymptomsList).Main()
 }
 
 ClassMethod Log(pMsg As %String)

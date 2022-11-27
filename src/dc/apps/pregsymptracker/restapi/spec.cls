@@ -212,7 +212,7 @@ XData OpenAPI [ MimeType = application/json ]
     },
     "/symptoms-list":{
       "get":{
-        "operationId":"GetSymptomList",
+        "operationId":"GetSymptomsList",
         "x-ISC_RequiredResource":[
           "AppSymptoms:read"
         ],
