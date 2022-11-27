@@ -16,6 +16,7 @@
         "internalPort": 52773
       },
       "links": {
+        "Application": "${serverUrl}/csp/preg-symp-tracker/index.csp",
         "UnitTest Portal": "${serverUrl}/csp/sys/%25UnitTest.Portal.Home.cls?$NAMESPACE=IRISAPP",
         "API doc": "${serverUrl}/swagger-ui/index.html?url=http://localhost:64756/csp/preg-symp-tracker/api/_spec"
       }

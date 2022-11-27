@@ -6,37 +6,41 @@ document.getElementById("symptomsSelector").onchange = (evt) => {
     symptomsSelectorOnChange(evt);
 };
 
-document.getElementById("btnPostSymptom").onclick = (evt) => {
+document.getElementById("btnSave").onclick = (evt) => {
     btnPostSymptomOnClick(evt);
 }
 
-document.getElementById("btnGetSymptom").onclick = (evt) => {
-    btnGetSymptomOnClick(evt);
+document.getElementById("btnClear").onclick = (evt) => {
+    clearForm();
 }
 
-document.getElementById("btnPutSymptom").onclick = (evt) => {
-    btnPutSymptomOnClick(evt);
-}
+// document.getElementById("btnGetSymptom").onclick = (evt) => {
+//     btnGetSymptomOnClick(evt);
+// }
 
-document.getElementById("btnDeleteSymptom").onclick = (evt) => {
-    btnDeleteSymptomOnClick(evt);
-}
+// document.getElementById("btnPutSymptom").onclick = (evt) => {
+//     btnPutSymptomOnClick(evt);
+// }
 
-document.getElementById("btnFirst").onclick = (evt) => {
-    btnFirstOnClick(evt);
-}
+// document.getElementById("btnDeleteSymptom").onclick = (evt) => {
+//     btnDeleteSymptomOnClick(evt);
+// }
 
-document.getElementById("btnPrevious").onclick = (evt) => {
-    btnPreviousOnClick(evt);
-}
+// document.getElementById("btnFirst").onclick = (evt) => {
+//     btnFirstOnClick(evt);
+// }
 
-document.getElementById("btnNext").onclick = (evt) => {
-    btnNextOnClick(evt);
-}
+// document.getElementById("btnPrevious").onclick = (evt) => {
+//     btnPreviousOnClick(evt);
+// }
 
-document.getElementById("btnLast").onclick = (evt) => {
-    btnLastOnClick(evt);
-}
+// document.getElementById("btnNext").onclick = (evt) => {
+//     btnNextOnClick(evt);
+// }
+
+// document.getElementById("btnLast").onclick = (evt) => {
+//     btnLastOnClick(evt);
+// }
 
 const BASE_URL = "/csp/preg-symp-tracker/api";
 const PAGE_SIZE = 10;
@@ -102,7 +106,7 @@ class FHIRSearchParams {
 const windowOnLoad = (evt) => {
     createSymptomsList();
     updateSymptomsGrid();
-    console.log("page is fully loaded");
+    clearForm();
 }
 
 const symptomsSelectorOnChange = (evt) => {
@@ -115,9 +119,21 @@ const symptomsSelectorOnChange = (evt) => {
 const btnPostSymptomOnClick = (evt) => {
     const symptom = getSymptomOption();
     const effectiveDateTime = getSymptomDateTime();
-    postSymptom(symptom, effectiveDateTime)
-        .then(() => defaultOkHandling())
-        .catch((error) => defaultErrorhandling(error));
+    if (!window.editingId) {
+        postSymptom(symptom, effectiveDateTime)
+            .then(() => {
+                clearForm();
+                defaultOkHandling();
+            })
+            .catch((error) => defaultErrorhandling(error));
+    } else {
+        putSymptom(window.editingId, symptom, effectiveDateTime)
+            .then(() => {
+                clearForm();
+                defaultOkHandling();
+            })
+            .catch((error) => defaultErrorhandling(error));
+    }
 }
 
 const btnGetSymptomOnClick = (evt) => {
@@ -146,8 +162,9 @@ const btnDeleteSymptomOnClick = (evt) => {
 }
 
 const showMsg = (msg) => {
-    const msgBox = document.getElementById("msgBox");
-    msgBox.innerText = msg;
+    // const msgBox = document.getElementById("msgBox");
+    // msgBox.innerText = msg;
+    alert(msg);
 }
 
 const httpGet = (url) => {
@@ -283,16 +300,46 @@ const drawLoading = (el, msg) => {
 const getSymptomDescription = (code) => code.text || code.coding[0].display;
 
 const drawSymptoms = (el, symptoms) => {
-    el.innerHTML = `
-    <table>
-        <tr><td>ID</td><td>Description</td><td>Date/time</td></tr>
-        ${symptoms.map(symptom =>
-        `<tr><td>${symptom.id}</td><td>${getSymptomDescription(symptom.code)}</td><td>${symptom.effectiveDateTime}</td></tr>\n`
-    ).join('')}
+    el.innerHTML = symptoms.map(symptom => `
+    <li>
+       <div class="timeline-dots border-primary"></div>
+       <h6 class="">${getSymptomDescription(symptom.code)}</h6>
+       <small class="mt-1">${symptom.effectiveDateTime}</small>
+       <div>
+          <a href="#void" onclick="editSymptom(${symptom.id})" class="btn iq-bg-primary">Edit</a>
+          <a href="#void" onclick="removeSymptom(${symptom.id})" class="btn iq-bg-danger">Delete</a>
+       </div>
+    </li>
     </table>
-    `;
-    drawNavLabel();
+    `).join('');
+    // drawNavLabel();
 }
+
+const editSymptom = (id) => {
+    getSymptom(id).then(response => {
+        console.log(response)
+
+        const symptomsSelector = document.getElementById("symptomsSelector");
+        symptomsSelector.value = response.code.text;
+
+        const dateSymptom = document.getElementById("dateSymptom");
+        dateSymptom.value = response.effectiveDateTime.split("T")[0];
+
+        const timeSymptom = document.getElementById("timeSymptom");
+        timeSymptom.value = response.effectiveDateTime.split("T")[1].split("Z")[0];
+
+        window.editingId = id;
+    })
+};
+
+const removeSymptom = (id) => {
+    deleteSymptom(id)
+        .then(() => {
+            clearForm();
+            defaultOkHandling();
+        })
+        .catch((error) => defaultErrorhandling(error));
+};
 
 const createSymptomsList = () => {
     const symptomsList = document.getElementById("symptomsList");
@@ -302,7 +349,7 @@ const createSymptomsList = () => {
 }
 
 const updateSymptomsGrid = (fhirSearchParams) => {
-    const divSymptoms = document.getElementById("divSymptoms");
+    const divSymptoms = document.getElementById("patientTimeline");
 
     const filter = fhirSearchParams ? fhirSearchParams : new FHIRSearchParams();
     filter._count = PAGE_SIZE;
@@ -312,7 +359,7 @@ const updateSymptomsGrid = (fhirSearchParams) => {
         drawSymptoms(divSymptoms, symptoms);
     }).catch((error) => defaultErrorhandling(error));
 
-    drawLoading(divSymptoms, "Loading patient symptoms...");
+    // drawLoading(divSymptoms, "Loading patient symptoms...");
 }
 
 const defaultOkHandling = () => {
@@ -374,4 +421,17 @@ const drawNavLabel = () => {
     const currentPage = relationLinks.next.page ? 
         parseInt(relationLinks.next.page) - 1 : parseInt(relationLinks.last.page)
     navLabel.innerText = `Page ${currentPage}/${relationLinks.last.page}`;
+}
+
+const clearForm = () => {
+    const symptomsSelector = document.getElementById("symptomsSelector");
+    symptomsSelector.value = "";
+
+    const dateSymptom = document.getElementById("dateSymptom");
+    dateSymptom.value = new Date().toISOString().split("T")[0];
+
+    const timeSymptom = document.getElementById("timeSymptom");
+    timeSymptom.value = new Date().toLocaleTimeString().split(":").slice(0,2).join(":");
+
+    window.editingId = "";
 }
