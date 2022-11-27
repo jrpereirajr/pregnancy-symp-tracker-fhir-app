@@ -23,6 +23,9 @@
           <Version>1.*</Version>
         </ModuleReference>
       </Dependencies>
+      <Invokes>
+        <Invoke Class="dc.apps.pregsymptracker.util.Setup" Method="Main"></Invoke>
+      </Invokes>
     </Module>
   </Document>
 </Export>
