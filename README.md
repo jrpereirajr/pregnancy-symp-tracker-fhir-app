@@ -59,26 +59,6 @@ Here are some screenshots:
 USER>zpm "pregnancy-symp-tracker-fhir-app"
 ```
 
-## Config
-
-After ZPM installation, you need to create a configuration object like this one:
-
-```
-Set ^restapi.FHIRaaSClient = {"config": {
-    "Server": "fhir.fkwlwiygbul2.static-test-account.isccloud.io",
-    "Port": 443,
-    "UseHTTPS": 1,
-    "SSLConfig": "default",
-    "APIKeyCred": "fhirserver-apikey"
-}}.%ToJSON()
-```
-
-Where `Server` is your FHIR Server address and `APIKeyCred` is an IRIS Interoperability credential with the FHIR Server API KEY.
-
-You can create a credential using the IRIS portal >> Interoperability >> Credentials. Click on the New button, inform the credential ID and the FHIR Server API KEY in the Password field, then save by hiting the Save button.
-
-![IRIS Interoperability Credentials](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/qxDSg8Lk5o.png)
-
 ## Installing using Docker
 
 If the online demo is not available anymore or you would like to play with the project code, you can set up a docker container. In order to get your container running, follow these steps:
@@ -100,3 +80,23 @@ $ docker-compose build
 ```
 $ docker-compose up -d
 ```
+
+## Config
+
+After ZPM installation, you need to create a configuration object like this one:
+
+```
+Set ^restapi.FHIRaaSClient = {"config": {
+    "Server": "fhir.fkwlwiygbul2.static-test-account.isccloud.io",
+    "Port": 443,
+    "UseHTTPS": 1,
+    "SSLConfig": "default",
+    "APIKeyCred": "fhirserver-apikey"
+}}.%ToJSON()
+```
+
+Where `Server` is your FHIR Server address and `APIKeyCred` is an IRIS Interoperability credential with the FHIR Server API KEY.
+
+You can create a credential using the IRIS portal >> Interoperability >> Credentials. Click on the New button, inform the credential ID and the FHIR Server API KEY in the Password field, then save by hiting the Save button.
+
+![IRIS Interoperability Credentials](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/qxDSg8Lk5o.png)
