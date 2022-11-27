@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat&logo=AdGuard)](LICENSE)
 
-# pregnancy-symp-tracker-fhir-app
+# Pregnancy Symptoms Tracker
 
 This is an example of how to FHIR to help pregnants to track their symptoms and share with health caregivers.
 
@@ -49,9 +49,16 @@ This application uses the FHIR resources [Patient](https://build.fhir.org/patien
 
 You can try this app online [here](// todo:).
 
+You can use the following users in order to try the demo:
+
+| User          | Password      |
+|---------------|---------------|
+| MarySmith     | marysmith     |
+| SuzieMartinez | suziemartinez |
+
 Here are some screenshots:
 
-// todo:
+![Patient screenshot](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/Isod8E0CyW.png)
 
 ## Installing using ZPM
 
@@ -97,6 +104,6 @@ Set ^restapi.FHIRaaSClient = {"config": {
 
 Where `Server` is your FHIR Server address and `APIKeyCred` is an IRIS Interoperability credential with the FHIR Server API KEY.
 
-You can create a credential using the IRIS portal >> Interoperability >> Credentials. Click on the New button, inform the credential ID and the FHIR Server API KEY in the Password field, then save by hiting the Save button.
+You can create a credential using the [IRIS portal](http://localhost:64756/csp/sys/%25CSP.Portal.Home.zen) in the menu Interoperability >> Credentials. Click on the New button, inform the credential ID and the FHIR Server API KEY in the Password field, then save by hitting the Save button.
 
 ![IRIS Interoperability Credentials](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/qxDSg8Lk5o.png)
