@@ -16,7 +16,7 @@ ClassMethod Test()
     Set o.Port = 443
     Set o.UseHTTPS = 1
     Set o.SSLConfig = "default"
-    Set o.APIKeyCred = "fhiraas-apikey"
+    Set o.APIKeyCred = "fhirserver-apikey"
 
     #; Set response = o.HTTPGet("/Patient/1")
     #; Do response.OutputToDevice()

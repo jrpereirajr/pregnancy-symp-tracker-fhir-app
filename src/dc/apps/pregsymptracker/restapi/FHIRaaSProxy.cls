@@ -65,7 +65,7 @@ ClassMethod GetFHIRaaSClient() As dc.apps.pregsymptracker.restapi.FHIRaaSClient
     Set fhiraasClient.Port = 443
     Set fhiraasClient.UseHTTPS = 1
     Set fhiraasClient.SSLConfig = "default"
-    Set fhiraasClient.APIKeyCred = "fhiraas-apikey"
+    Set fhiraasClient.APIKeyCred = "fhirserver-apikey"
     Return fhiraasClient
 }
 

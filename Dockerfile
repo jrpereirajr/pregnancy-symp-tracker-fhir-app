@@ -9,7 +9,7 @@ WORKDIR /home/irisowner/irisbuild
 ARG TESTS=0
 ARG MODULE="pregnancy-symp-tracker-fhir-app"
 ARG NAMESPACE="IRISAPP"
-ARG FHIRAAS_APIKEY
+ARG FHIRSERVER_APIKEY
 
 ## Embedded Python environment
 ENV IRISUSERNAME "_SYSTEM"
@@ -23,8 +23,7 @@ RUN --mount=type=bind,src=.,dst=. \
     iris start IRIS && \
 	iris session IRIS < iris.script && \
     ([ $TESTS -eq 0 ] || iris session iris -U $NAMESPACE "##class(%ZPM.PackageManager).Shell(\"test $MODULE -v -only\",1,1)") && \
-    iris session iris -U IRISAPP "##class(Ens.Config.Credentials).SetCredential(\"fhiraas-apikey\",\"\",\"$FHIRAAS_APIKEY\")" && \
+    iris session iris -U IRISAPP "##class(Ens.Config.Credentials).SetCredential(\"fhirserver-apikey\",\"\",\"$FHIRSERVER_APIKEY\")" && \
     iris session iris -U IRISAPP "##class(dc.apps.pregsymptracker.restapi.impl).ConfigTest()" && \
-    iris session iris -U IRISAPP "##class(dc.apps.pregsymptracker.util.Setup).Main()" && \
     iris session iris -U IRISAPP "##class(dc.apps.pregsymptracker.util.Example).Main()" && \
     iris stop IRIS quietly
