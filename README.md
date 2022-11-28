@@ -58,7 +58,7 @@ You can use the following users in order to try the demo:
 
 Here are some screenshots:
 
-![Patient screenshot](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/Isod8E0CyW.png)
+![Patient screenshot](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/pGajE9wKC5.png)
 
 ## Installing using ZPM
 
