@@ -14,70 +14,10 @@ document.getElementById("btnClear").onclick = (evt) => {
     clearForm();
 }
 
-// document.getElementById("btnGetSymptom").onclick = (evt) => {
-//     btnGetSymptomOnClick(evt);
-// }
-
-// document.getElementById("btnPutSymptom").onclick = (evt) => {
-//     btnPutSymptomOnClick(evt);
-// }
-
-// document.getElementById("btnDeleteSymptom").onclick = (evt) => {
-//     btnDeleteSymptomOnClick(evt);
-// }
-
-// document.getElementById("btnFirst").onclick = (evt) => {
-//     btnFirstOnClick(evt);
-// }
-
-// document.getElementById("btnPrevious").onclick = (evt) => {
-//     btnPreviousOnClick(evt);
-// }
-
-// document.getElementById("btnNext").onclick = (evt) => {
-//     btnNextOnClick(evt);
-// }
-
-// document.getElementById("btnLast").onclick = (evt) => {
-//     btnLastOnClick(evt);
-// }
-
 const BASE_URL = "/csp/preg-symp-tracker/api";
 const PAGE_SIZE = 10;
 const relationLinks = {};
-// todo: get via API
-const SYMPTOMS_OPTIONS = {
-    "Vomiting": {
-        "coding": [
-            {
-                "system": "http://loinc.org",
-                "code": "45708-5",
-                "display": "Vomiting [Minimum Data Set]"
-            }
-        ],
-        "text": "Vomiting"
-    },
-    "Fever": {
-        "coding": [
-            {
-                "system": "http://snomed.info/sct",
-                "code": "386661006",
-                "display": "Fever (finding)"
-            }
-        ],
-        "text": "Fever"
-    },
-    "Generic complaint": {
-        "coding": [
-            {
-                "system": "http://snomed.info/sct",
-                "code": "409586006",
-                "display": "Complaint (finding)"
-            }
-        ],
-        "text": "Generic complaint"
-    }
-};
+let SYMPTOMS_OPTIONS = {};
 
 class FHIRSearchParams {
     _count;
@@ -104,7 +44,8 @@ class FHIRSearchParams {
 }
 
 const windowOnLoad = (evt) => {
-    createSymptomsList();
+    loadSymptomsList()
+    .then(() => createSymptomsList());
     updateSymptomsGrid();
     clearForm();
 }
@@ -340,6 +281,14 @@ const removeSymptom = (id) => {
         })
         .catch((error) => defaultErrorhandling(error));
 };
+
+const loadSymptomsList = () => {
+    return httpGet(`${BASE_URL}/symptoms-list`)
+    .then(response => response.json())
+    .then(response => {
+        SYMPTOMS_OPTIONS = response;
+    });
+}
 
 const createSymptomsList = () => {
     const symptomsList = document.getElementById("symptomsList");

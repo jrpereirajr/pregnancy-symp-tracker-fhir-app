@@ -249,23 +249,31 @@
                                  </div>
                               </div>
                               <div class="iq-card-body">
-                                 <div style="margin-bottom: 5px;">
-                                    <datalist id="symptomsList" style="width: 200px;"></datalist>
+                                 <form>
                                     <div>
-                                       <input id="symptomsSelector" name="symptomsSelector" list="symptomsList" style="width:650px;"/>
+                                       <div class="form-group">
+                                          <datalist id="symptomsList"></datalist>
+                                          <input id="symptomsSelector" name="symptomsSelector" list="symptomsList" class="form-control"/>
+                                       </div>
+                                       <div class="form-group">
+                                          <input id="genericSymptom" type="text" style="display:none;" placeholder="Complaint description here" class="form-control"/>
+                                       </div>
                                     </div>
-                                    <div>
-                                       <input id="genericSymptom" type="text" style="display:none; width:650px;" placeholder="Complaint description here"/>
+                                       <div class="form-group">
+                                          <div class="row">
+                                             <div class="col">
+                                                <input id="dateSymptom" type="date" class="form-control"/>
+                                             </div>
+                                             <div class="col">
+                                                <input id="timeSymptom" type="time" class="form-control"/>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    <div class="form-group">
+                                       <button id="btnSave" type="button" class="btn btn-primary">Save</button>
+                                       <button id="btnClear" type="button" class="btn iq-bg-danger">Cancel</button>
                                     </div>
-                                 </div>
-                                 <div style="margin-bottom: 5px;">
-                                    <input id="dateSymptom" type="date"/>
-                                    <input id="timeSymptom" type="time"/>
-                                 </div>
-                                 <div>
-                                    <a href="#" class="btn iq-bg-primary" id="btnSave">Save</a>
-                                    <a href="#" class="btn iq-bg-primary" id="btnClear">Clear</a>
-                                 </div>
+                                 </form>
                               </div>
                            </div>
                         </div>
