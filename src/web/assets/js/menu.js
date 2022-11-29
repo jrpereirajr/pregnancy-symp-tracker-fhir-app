@@ -1,24 +1,34 @@
 const createMenu = () => {
     const menuContainer = document.getElementById("iq-sidebar-toggle");
-    const menu = [{
-        type: "menu-title",
-        cssClass: "ri-subtract-line",
-        label: "Patient"
-    },{
-        type: "menu-item",
-        href: "patient.csp",
-        cssClass: "ri-group-fill",
-        label: "Symptoms"
-    },{
-        type: "menu-title",
-        cssClass: "ri-subtract-line",
-        label: "Doctor"
-    },{
-        type: "menu-item",
-        href: "doctor.csp",
-        cssClass: "ri-hospital-fill",
-        label: "Doctor Dashboard"
-    }];
+    const menu = [
+        /// Patient
+        {
+            type: "menu-title",
+            cssClass: "ri-subtract-line",
+            label: "Patient"
+        },{
+            type: "menu-item",
+            href: "patient.csp",
+            cssClass: "ri-group-fill",
+            label: "My symptoms"
+        },{
+            type: "menu-item",
+            href: "dashboardpatient.csp",
+            cssClass: "ri-group-fill",
+            label: "My dashboard"
+        },
+        /// Doctor
+        {
+            type: "menu-title",
+            cssClass: "ri-subtract-line",
+            label: "Doctor"
+        },{
+            type: "menu-item",
+            href: "doctor.csp",
+            cssClass: "ri-hospital-fill",
+            label: "Doctor Dashboard"
+        }
+    ];
     menuContainer.innerHTML = menu.map(item => {
         if (item.type === "menu-title") {
             return `

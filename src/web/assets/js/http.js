@@ -1,5 +1,3 @@
-
-
 class FHIRSearchParams {
     _count;
     _sort;

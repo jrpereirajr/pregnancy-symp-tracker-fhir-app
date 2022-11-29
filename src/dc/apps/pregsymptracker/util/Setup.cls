@@ -20,9 +20,9 @@ ClassMethod CreateResources()
     Try {
         ZN "%SYS"
         Do $CLASSMETHOD("Security.Resources", "Delete", "AppSymptoms")
-        Do $CLASSMETHOD("Security.Resources", "Delete", "AppAccessPatients")
+        Do $CLASSMETHOD("Security.Resources", "Delete", "AppAccessDoctorPatients")
         $$$TOE(st, $CLASSMETHOD("Security.Resources", "Create", "AppSymptoms", "Patient symptoms", "RWU", ""))
-        $$$TOE(st, $CLASSMETHOD("Security.Resources", "Create", "AppAccessPatients", "Patients access rights", "RWU", ""))
+        $$$TOE(st, $CLASSMETHOD("Security.Resources", "Create", "AppAccessDoctorPatients", "Patients access rights", "RWU", ""))
     } Catch(e) {
         ZN ns
         Throw e
@@ -39,7 +39,7 @@ ClassMethod CreateRoles()
         Do $CLASSMETHOD("Security.Roles", "Delete", "AppPatient")
         Do $CLASSMETHOD("Security.Roles", "Delete", "AppDoctor")
         $$$TOE(st, $CLASSMETHOD("Security.Roles", "Create", "AppPatient", "Application Patient role", "AppSymptoms:RWU", ""))
-        $$$TOE(st, $CLASSMETHOD("Security.Roles", "Create", "AppDoctor", "Application Doctor role", "AppSymptoms:RWU,AppAccessPatients:RWU", ""))
+        $$$TOE(st, $CLASSMETHOD("Security.Roles", "Create", "AppDoctor", "Application Doctor role", "AppSymptoms:RWU,AppAccessDoctorPatients:RWU", ""))
     } Catch(e) {
         ZN ns
         Throw e

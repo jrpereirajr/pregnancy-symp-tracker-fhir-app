@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 28, 2022 14:19:57
+/// Updated Nov 29, 2022 11:43:09
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -42,12 +42,20 @@ ClassMethod CopyHeaders(pFHIRResponse As %Net.HttpResponse)
     } While (header '= "")
 }
 
-ClassMethod GetObservationPath(pId As %String = "") As %String
+ClassMethod GetObservationPath(pId As %String = "", pPatientId As %String = "") As %String
 {
     Set querystring = %request.CgiEnvs("QUERY_STRING")
+
+    // remove invalid Observation parameters
+    Set re = ##class(%Regex.Matcher).%New("PatientId=.*?&", querystring)
+    Set querystring = re.ReplaceFirst("")
+    Set re = ##class(%Regex.Matcher).%New("&PatientId=.*?", querystring)
+    Set querystring = re.ReplaceFirst("")
+
     Set path = "/Observation"
     Set:(pId '= "") path = path_"/"_pId
-    Set path = path_"?patient=Patient/"_..GetCurrentPatientId()
+    Set:(pPatientId = "") pPatientId = ..GetCurrentPatientId()
+    Set path = path_"?patient="_pPatientId
     Set:(querystring '= "") path = path_"&"_querystring
     return path
 }
@@ -143,6 +151,15 @@ ClassMethod GetDoctorPatientsList() As %Stream.Object
     Set doctorId = $USERNAME
     Set patientsIdList = ##class(dc.apps.pregsymptracker.data.PatientDoctor).GetPatientsFromDoctor(doctorId)
     Return ..FHIRaaSCall("HTTPGet", "/Patient?_id="_patientsIdList)
+}
+
+/// Get the symptoms of the doctor's patients<br/>
+/// The method arguments hold values for:<br/>
+///     PatientId<br/>
+ClassMethod GetDoctorPatientSymptomsList(PatientId As %Integer) As %Stream.Object
+{
+    // todo: validate if pPatientId is a current doctor's patient
+    Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath("", PatientId))
 }
 
 /// Retrieves a list with the Patient symptoms handled by the application

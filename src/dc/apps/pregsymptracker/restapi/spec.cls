@@ -236,8 +236,8 @@ XData OpenAPI [ MimeType = application/json ]
       "get":{
         "operationId":"GetDoctorPatientsList",
         "x-ISC_RequiredResource":[
-          "AppAccessPatients:read",
-          "AppAccessPatients:write"
+          "AppAccessDoctorPatients:read",
+          "AppAccessDoctorPatients:write"
         ],
         "security":[
           {
@@ -247,6 +247,34 @@ XData OpenAPI [ MimeType = application/json ]
         ],
         "description":"Get the patientes of the current logged doctor",
         "parameters":[
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
+    "/doctor/patient/symptoms":{
+      "get":{
+        "operationId":"GetDoctorPatientSymptomsList",
+        "x-ISC_RequiredResource":[
+          "AppAccessDoctorPatients:read"
+        ],
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Get the symptoms of the doctor's patients",
+        "parameters":[
+          {
+            "in":"query",
+            "name":"PatientId",
+            "required":true,
+            "type":"integer"
+          }
         ],
         "responses":{
           "200":{
