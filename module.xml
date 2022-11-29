@@ -3,7 +3,7 @@
   <Document name="pregnancy-symp-tracker-fhir-app.ZPM">
     <Module>
       <Name>pregnancy-symp-tracker-fhir-app</Name>
-      <Version>1.0.17</Version>
+      <Version>1.0.18</Version>
       <Description>An example of how to FHIR for help pregnants to track their symptoms and share with health caregivers</Description>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
