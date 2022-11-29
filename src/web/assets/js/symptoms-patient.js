@@ -7,7 +7,7 @@ document.getElementById("symptomsSelector").onchange = (evt) => {
 };
 
 document.getElementById("btnSave").onclick = (evt) => {
-    btnPostSymptomOnClick(evt);
+    btnSaveSymptomOnClick(evt);
 }
 
 document.getElementById("btnClear").onclick = (evt) => {
@@ -18,30 +18,6 @@ const BASE_URL = "/csp/preg-symp-tracker/api";
 const PAGE_SIZE = 10;
 const relationLinks = {};
 let SYMPTOMS_OPTIONS = {};
-
-class FHIRSearchParams {
-    _count;
-    _sort;
-    page;
-    queryId;
-
-    getSearchExpression() {
-        let filter = [];
-        if (this._count) {
-            filter.push(`_count=${this._count}`);
-        }
-        if (this._sort) {
-            filter.push(`_sort=${this._sort}`);
-        }
-        if (this.page) {
-            filter.push(`page=${this.page}`);
-        }
-        if (this.queryId) {
-            filter.push(`queryId=${this.queryId}`);
-        }
-        return filter.join("&");
-    }
-}
 
 const windowOnLoad = (evt) => {
     loadSymptomsList()
@@ -57,7 +33,7 @@ const symptomsSelectorOnChange = (evt) => {
     genericSymptom.style.display = symptomId == "Generic complaint" ? "" : "none";
 }
 
-const btnPostSymptomOnClick = (evt) => {
+const btnSaveSymptomOnClick = (evt) => {
     const symptom = getSymptomOption();
     const effectiveDateTime = getSymptomDateTime();
     if (!window.editingId) {
@@ -77,85 +53,10 @@ const btnPostSymptomOnClick = (evt) => {
     }
 }
 
-const btnGetSymptomOnClick = (evt) => {
-    const id = document.getElementById("txtSymptomID").value;
-    getSymptom(id)
-        .then((response) => {
-            showMsg(JSON.stringify(response));
-        })
-        .catch((error) => defaultErrorhandling(error));
-}
-
-const btnPutSymptomOnClick = (evt) => {
-    const id = document.getElementById("txtSymptomID").value;
-    const symptom = getSymptomOption();
-    const effectiveDateTime = getSymptomDateTime();
-    putSymptom(id, symptom, effectiveDateTime)
-        .then(() => defaultOkHandling())
-        .catch((error) => defaultErrorhandling(error));
-}
-
-const btnDeleteSymptomOnClick = (evt) => {
-    const id = document.getElementById("txtSymptomID").value;
-    deleteSymptom(id)
-        .then(() => defaultOkHandling())
-        .catch((error) => defaultErrorhandling(error));
-}
-
 const showMsg = (msg) => {
     // const msgBox = document.getElementById("msgBox");
     // msgBox.innerText = msg;
     alert(msg);
-}
-
-const httpGet = (url) => {
-    return fetch(url).then(response => {
-        if (!response.ok) {
-            return Promise.reject(response);
-        }
-        return response;
-    });
-}
-
-const httpPost = (url, data) => {
-    return fetch(url, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    }).then(response => {
-        if (!response.ok) {
-            return Promise.reject(response);
-        }
-        return response;
-    });
-}
-
-const httpPut = (url, data) => {
-    return fetch(url, {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    }).then(response => {
-        if (!response.ok) {
-            return Promise.reject(response);
-        }
-        return response;
-    });
-}
-
-const httpDelete = (url) => {
-    return fetch(url, {
-        method: "DELETE"
-    }).then(response => {
-        if (!response.ok) {
-            return Promise.reject(response);
-        }
-        return response;
-    });
 }
 
 const getRelationURL = (response, pRelationType) => {

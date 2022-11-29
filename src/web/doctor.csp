@@ -1,3 +1,8 @@
+<script language="cache" method="OnPreHTTP" arguments="" returntype="%Boolean">
+Do ##class(dc.apps.pregsymptracker.util.Util).AssertRole("AppDoctor")
+Return 1
+</script>
+
 <!doctype html>
 <html lang="en">
    <head>
@@ -46,24 +51,6 @@
             <div id="sidebar-scrollbar">
                <nav class="iq-sidebar-menu">
                   <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <!--
-                     <li class="iq-menu-title"><i class="ri-subtract-line"></i><span>Dashboard</span></li>
-                     <li>
-                        <a href="index.csp" class="iq-waves-effect"><i class="ri-hospital-fill"></i><span>Doctor Dashboard</span></a>
-                     </li>                     
-                     <li>
-                        <a href="dashboard-1.html" class="iq-waves-effect"><i class="ri-home-8-fill"></i><span>Hospital Dashboard 1 </span></a>
-                     </li>
-                     <li>
-                        <a href="dashboard-2.html" class="iq-waves-effect"><i class="ri-briefcase-4-fill"></i><span>Hospital Dashboard 2</span></a>
-                     </li>
-                     <li>
-                        <a href="dashboard-3.html" class="iq-waves-effect"><i class="ri-group-fill"></i><span>Patient Dashboard</span></a>
-                     </li>
-                     <li>
-                        <a href="dashboard-4.html" class="iq-waves-effect"><i class="lab la-mendeley"></i><span>Covid-19 Dashboard</span><span class="badge badge-danger">New</span></a>
-                     </li>
-                  -->
                   </ul>
                </nav>
                <div class="p-3"></div>
@@ -113,54 +100,7 @@
                                  <div class="iq-card-body p-0 ">
                                     <div class="bg-primary p-3">
                                        <h5 class="mb-0 text-white line-height">Hello #($USERNAME)#</h5>
-                                       <!--<span class="text-white font-size-12">Available</span>-->
                                     </div>
-                                    <!--
-                                    <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-file-user-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">My Profile</h6>
-                                             <p class="mb-0 font-size-12">View personal profile details.</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-profile-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Edit Profile</h6>
-                                             <p class="mb-0 font-size-12">Modify your personal details.</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-account-box-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Account settings</h6>
-                                             <p class="mb-0 font-size-12">Manage your account parameters.</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-lock-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Privacy Settings</h6>
-                                             <p class="mb-0 font-size-12">Control your privacy parameters.</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    -->
                                     <div class="d-inline-block w-100 text-center p-3">
                                        <a class="bg-primary iq-sign-btn" href="?IRISLogout=end" role="button">Logout<i class="ri-login-box-line ml-2"></i></a>
                                     </div>
@@ -174,6 +114,25 @@
             </div>
             <!-- TOP Nav Bar END -->
             <div class="container-fluid">
+               <div class="row">
+                  <div class="col-lg-12">
+                     <div class="row">
+                        <div class="col-sm-12">
+                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                           <div class="iq-card-header d-flex justify-content-between">
+                              <div class="iq-header-title">
+                                 <h4 class="card-title">My patients</h4>
+                              </div>
+                           </div>
+                           <div class="iq-card-body">
+                              <div class="table-responsive" id="patientList">
+                              </div>
+                           </div>
+                         </div> 
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
@@ -212,5 +171,6 @@
       <script src="js/custom.js"></script>
       <script src="assets/js/http.js"></script>
       <script src="assets/js/menu.js"></script>
+      <script src="assets/js/doctor.js"></script>
    </body>
 </html>

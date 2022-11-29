@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 27, 2022 01:25:47
+/// Updated Nov 28, 2022 14:19:57
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -93,7 +93,6 @@ ClassMethod GetCurrentPatientId() As %String
 /// OpenAPI definition
 ClassMethod GetOpenAPISpec() As %Stream.Object
 {
-    Do ..%SetStatusCode(200)
     Set xdataID = "dc.apps.pregsymptracker.restapi.spec||OpenAPI"
     Set compiledXdata = ##class(%Dictionary.CompiledXData).%OpenId(xdataID)
     Set tStream = compiledXdata.Data
@@ -138,10 +137,17 @@ ClassMethod DeleteSymptom(id As %Integer) As %Stream.Object
     Return ..FHIRaaSCall("HTTPDelete", ..GetObservationPath(id))
 }
 
+/// Get the patientes of the current logged doctor
+ClassMethod GetDoctorPatientsList() As %Stream.Object
+{
+    Set doctorId = $USERNAME
+    Set patientsIdList = ##class(dc.apps.pregsymptracker.data.PatientDoctor).GetPatientsFromDoctor(doctorId)
+    Return ..FHIRaaSCall("HTTPGet", "/Patient?_id="_patientsIdList)
+}
+
 /// Retrieves a list with the Patient symptoms handled by the application
 ClassMethod GetSymptomsList() As %Stream.Object
 {
-    Do ..%SetStatusCode(200)
     Set symptomsList = ##class(dc.apps.pregsymptracker.data.SymptomsList).GetSymptomList()
     Return symptomsList
 }

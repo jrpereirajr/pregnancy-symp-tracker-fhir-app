@@ -232,6 +232,29 @@ XData OpenAPI [ MimeType = application/json ]
         }
       }
     },
+    "/doctor/patients":{
+      "get":{
+        "operationId":"GetDoctorPatientsList",
+        "x-ISC_RequiredResource":[
+          "AppAccessPatients:read",
+          "AppAccessPatients:write"
+        ],
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Get the patientes of the current logged doctor",
+        "parameters":[
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
     "/_spec":{
       "get":{
         "operationId":"GetOpenAPISpec",
