@@ -51,14 +51,20 @@ You can try this app online [here](// todo:).
 
 You can use the following users in order to try the demo:
 
-| User          | Password      |
-|---------------|---------------|
-| MarySmith     | marysmith     |
-| SuzieMartinez | suziemartinez |
+| User          | Password      | Role
+|---------------|---------------|---------------
+| MarySmith     | marysmith     | Patient
+| SuzieMartinez | suziemartinez | Patient
+| AnneJackson   | annejackson   | Doctor/Patient
+| PerterMorgan  | pertermorgan  | Doctor
 
 Here are some screenshots:
 
-![Patient screenshot](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/pGajE9wKC5.png)
+![Patient symptoms page](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/2clZMr2z9B.png)
+
+![Patient dashboard page](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/jrxjTdnqFT.png)
+
+![Doctor's patient list](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/twGUA6mU1C.png)
 
 ## Installing using ZPM
 
