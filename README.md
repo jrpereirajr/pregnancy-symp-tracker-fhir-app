@@ -45,27 +45,6 @@ The application REST API uses the FHIR Server REST API in order to handle FHIR r
 
 This application uses the FHIR resources [Patient](https://build.fhir.org/patient.html), [Practitionner](https://www.hl7.org/fhir/practitioner.html) and [Observation](https://build.fhir.org/observation.html). Patients' resources are bound to IRIS users and Observation resources are used to store the patient's symptoms.
 
-## Demo
-
-You can try this app online [here](// todo:).
-
-You can use the following users in order to try the demo:
-
-| User          | Password      | Role
-|---------------|---------------|---------------
-| MarySmith     | marysmith     | Patient
-| SuzieMartinez | suziemartinez | Patient
-| AnneJackson   | annejackson   | Doctor/Patient
-| PerterMorgan  | pertermorgan  | Doctor
-
-Here are some screenshots:
-
-![Patient symptoms page](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/2clZMr2z9B.png)
-
-![Patient dashboard page](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/jrxjTdnqFT.png)
-
-![Doctor's patient list](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/twGUA6mU1C.png)
-
 ## Installing using ZPM
 
 ```
@@ -113,3 +92,28 @@ Where `Server` is your FHIR Server address and `APIKeyCred` is an IRIS Interoper
 You can create a credential using the [IRIS portal](http://localhost:64756/csp/sys/%25CSP.Portal.Home.zen) in the menu Interoperability >> Credentials. Click on the New button, inform the credential ID and the FHIR Server API KEY in the Password field, then save by hitting the Save button.
 
 ![IRIS Interoperability Credentials](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/qxDSg8Lk5o.png)
+
+## Trying the app
+
+Use the following users in order to try the demo:
+
+| User          | Password      | Role
+|---------------|---------------|---------------
+| MarySmith     | marysmith     | Patient
+| SuzieMartinez | suziemartinez | Patient
+| AnneJackson   | annejackson   | Doctor/Patient
+| PerterMorgan  | pertermorgan  | Doctor
+
+When you log in as a patient, you can manage symptoms in the [My Symptoms](http://localhost:64756/csp/preg-symp-tracker/patient.csp) page or check out some metrics in the [My Dashboard](http://localhost:64756/csp/preg-symp-tracker/dashboardpatient.csp) page.
+
+When you log in as a doctor, you can see the doctor's patients list in the [Doctor Dashboard](http://localhost:64756/csp/preg-symp-tracker/doctor.csp) page.
+
+When you log in with a user having both roles, you can access all the pages.
+
+Here are some screenshots:
+
+![Patient symptoms page](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/2clZMr2z9B.png)
+
+![Patient dashboard page](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/jrxjTdnqFT.png)
+
+![Doctor's patient list](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/twGUA6mU1C.png)
