@@ -8,7 +8,7 @@ on:
 
 env:
   # Change this section according to your needs
-  IMAGE_NAME:   pregnancy-symp-tracker-fhir-app-01
+  IMAGE_NAME:   pregnancy-symp-tracker-fhir-app-02
   SERVICE:      pregnancy-symp-tracker-fhir-app
   DOMAIN_NAME:  pregnancy-symp-tracker-fhir-app.demo.community.intersystems.com
   SYSTEM_PWD:   ${{ secrets.SYSTEM_PWD }}
