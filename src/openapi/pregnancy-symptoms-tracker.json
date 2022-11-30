@@ -19,7 +19,7 @@
         "/symptom": {
             "post": {
                 "operationId": "PostSymptom",
-                "x-ISC_RequiredResource": ["AppSymptoms:read"],
+                "x-ISC_RequiredResource": ["AppSymptoms:write"],
                 "security": [
                     {
                         "basicAuth": []
@@ -92,7 +92,7 @@
             },
             "put": {
                 "operationId": "PutSymptom",
-                "x-ISC_RequiredResource": ["AppSymptoms:read"],
+                "x-ISC_RequiredResource": ["AppSymptoms:write"],
                 "security": [
                     {
                         "basicAuth": []
@@ -130,7 +130,7 @@
             },
             "delete": {
                 "operationId": "DeleteSymptom",
-                "x-ISC_RequiredResource": ["AppSymptoms:read"],
+                "x-ISC_RequiredResource": ["AppSymptoms:write"],
                 "security": [
                     {
                         "basicAuth": []
@@ -211,7 +211,7 @@
         "/doctor/patients": {
             "get": {
                 "operationId": "GetDoctorPatientsList",
-                "x-ISC_RequiredResource": ["AppAccessDoctorPatients:read", "AppAccessDoctorPatients:write"],
+                "x-ISC_RequiredResource": ["AppAccessDoctorPatients:read"],
                 "security": [
                     {
                         "basicAuth": []

@@ -24,7 +24,7 @@ XData OpenAPI [ MimeType = application/json ]
       "post":{
         "operationId":"PostSymptom",
         "x-ISC_RequiredResource":[
-          "AppSymptoms:read"
+          "AppSymptoms:write"
         ],
         "security":[
           {
@@ -103,7 +103,7 @@ XData OpenAPI [ MimeType = application/json ]
       "put":{
         "operationId":"PutSymptom",
         "x-ISC_RequiredResource":[
-          "AppSymptoms:read"
+          "AppSymptoms:write"
         ],
         "security":[
           {
@@ -144,7 +144,7 @@ XData OpenAPI [ MimeType = application/json ]
       "delete":{
         "operationId":"DeleteSymptom",
         "x-ISC_RequiredResource":[
-          "AppSymptoms:read"
+          "AppSymptoms:write"
         ],
         "security":[
           {
@@ -236,8 +236,7 @@ XData OpenAPI [ MimeType = application/json ]
       "get":{
         "operationId":"GetDoctorPatientsList",
         "x-ISC_RequiredResource":[
-          "AppAccessDoctorPatients:read",
-          "AppAccessDoctorPatients:write"
+          "AppAccessDoctorPatients:read"
         ],
         "security":[
           {
