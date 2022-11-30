@@ -12,7 +12,7 @@ Method CreateRequest()
 ClassMethod Test()
 {
     Set o = ..%New()
-    Set o.Server = "fhir.fkwlwiygbul2.static-test-account.isccloud.io"
+    Set o.Server = "fhir.ghim09twjq5g.static-test-account.isccloud.io"
     Set o.Port = 443
     Set o.UseHTTPS = 1
     Set o.SSLConfig = "default"

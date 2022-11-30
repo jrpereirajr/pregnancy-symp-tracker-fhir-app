@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 29, 2022 11:43:09
+/// Updated Nov 29, 2022 23:57:33
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -9,7 +9,7 @@ Parameter ExposeServerExceptions = 1;
 ClassMethod ConfigTest()
 {
     Set ^restapi.FHIRaaSClient = {"config": {
-        "Server": "fhir.fkwlwiygbul2.static-test-account.isccloud.io",
+        "Server": "fhir.ghim09twjq5g.static-test-account.isccloud.io",
         "Port": 443,
         "UseHTTPS": 1,
         "SSLConfig": "default",

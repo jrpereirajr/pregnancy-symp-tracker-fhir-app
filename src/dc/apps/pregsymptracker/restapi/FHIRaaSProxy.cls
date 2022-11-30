@@ -61,7 +61,7 @@ ClassMethod GetResponse() As %String
 ClassMethod GetFHIRaaSClient() As dc.apps.pregsymptracker.restapi.FHIRaaSClient
 {
     Set fhiraasClient = ##class(dc.apps.pregsymptracker.restapi.FHIRaaSClient).%New()
-    Set fhiraasClient.Server = "fhir.fkwlwiygbul2.static-test-account.isccloud.io"
+    Set fhiraasClient.Server = "fhir.ghim09twjq5g.static-test-account.isccloud.io"
     Set fhiraasClient.Port = 443
     Set fhiraasClient.UseHTTPS = 1
     Set fhiraasClient.SSLConfig = "default"
