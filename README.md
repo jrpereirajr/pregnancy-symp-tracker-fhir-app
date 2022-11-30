@@ -4,6 +4,15 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat&logo=AdGuard)](LICENSE)
 
+- [Pregnancy Symptoms Tracker](#pregnancy-symptoms-tracker)
+  * [Description](#description)
+  * [Team](#team)
+  * [Technical overview](#technical-overview)
+  * [Installing using ZPM](#installing-using-zpm)
+  * [Installing using Docker](#installing-using-docker)
+  * [Config](#config)
+  * [Trying the app](#trying-the-app)
+
 # Pregnancy Symptoms Tracker
 
 This is an example of how to FHIR to help pregnants to track their symptoms and share with health caregivers.
@@ -94,6 +103,8 @@ You can create a credential using the [IRIS portal](http://localhost:64756/csp/s
 ![IRIS Interoperability Credentials](https://github.com/jrpereirajr/pregnancy-symp-tracker-fhir-app/raw/master/img/qxDSg8Lk5o.png)
 
 ## Trying the app
+
+Access the application [here](http://localhost:64756/csp/preg-symp-tracker/index.csp).
 
 Use the following users in order to try the demo:
 
