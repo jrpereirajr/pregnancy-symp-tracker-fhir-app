@@ -4,8 +4,11 @@ ARG IMAGE=containers.intersystems.com/intersystems/iris:2021.1.0.215.0
 ARG IMAGE=intersystemsdc/iris-community
 FROM $IMAGE
 
+USER root 
+
 WORKDIR /home/irisowner/irisbuild
 RUN chown ${ISC_PACKAGE_MGRUSER}:${ISC_PACKAGE_IRISGROUP} /home/irisowner/irisbuild
+
 USER ${ISC_PACKAGE_MGRUSER}
 
 ARG TESTS=0
