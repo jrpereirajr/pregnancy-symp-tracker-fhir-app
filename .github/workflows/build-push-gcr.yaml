@@ -8,9 +8,9 @@ on:
 
 env:
   # Change this section according to your needs
-  IMAGE_NAME:   pregnancy-symptoms-tracker
-  SERVICE:      pregnancy-symptoms-tracker
-  DOMAIN_NAME:  pregnancy-symptoms-tracker.demo.community.intersystems.com
+  IMAGE_NAME:   pregnancy-symp-tracker-fhir-app
+  SERVICE:      pregnancy-symp-tracker-fhir-app
+  DOMAIN_NAME:  pregnancy-symp-tracker-fhir-app.demo.community.intersystems.com
   SYSTEM_PWD:   ${{ secrets.SYSTEM_PWD }}
 
    # Leave this section untouched
