@@ -25,6 +25,12 @@ This application uses InterSystems technologies in order to help pregnant women 
 
 This application was developed for the InterSystems IRIS for Health Contest: FHIR for Women's Health.
 
+## Online demo
+
+You can try the app without any installation [here](https://iris-megazord.demo.community.intersystems.com/csp/preg-symp-tracker/index.csp).
+
+Checkout the [Trying the app](#trying-the-app) section for users and passwords.
+
 ## Team
 
 * [Henrique Dias](https://community.intersystems.com/user/henrique-dias-2)
@@ -104,7 +110,7 @@ You can create a credential using the [IRIS portal](http://localhost:64756/csp/s
 
 ## Trying the app
 
-Access the application [here](http://localhost:64756/csp/preg-symp-tracker/index.csp).
+Access the application [here](https://iris-megazord.demo.community.intersystems.com/csp/preg-symp-tracker/index.csp) for a demo online or [here](http://localhost:64756/csp/preg-symp-tracker/index.csp) if you are running locally.
 
 Use the following users in order to try the demo:
 
@@ -115,9 +121,9 @@ Use the following users in order to try the demo:
 | AnneJackson   | annejackson   | Doctor/Patient
 | PerterMorgan  | pertermorgan  | Doctor
 
-When you log in as a patient, you can manage symptoms in the [My Symptoms](http://localhost:64756/csp/preg-symp-tracker/patient.csp) page or check out some metrics in the [My Dashboard](http://localhost:64756/csp/preg-symp-tracker/dashboardpatient.csp) page.
+When you log in as a patient, you can manage symptoms in the [My Symptoms](https://iris-megazord.demo.community.intersystems.com/csp/preg-symp-tracker/patient.csp) page or check out some metrics in the [My Dashboard](https://iris-megazord.demo.community.intersystems.com/csp/preg-symp-tracker/dashboardpatient.csp) page.
 
-When you log in as a doctor, you can see the doctor's patients list in the [Doctor Dashboard](http://localhost:64756/csp/preg-symp-tracker/doctor.csp) page.
+When you log in as a doctor, you can see the doctor's patients list in the [Doctor Dashboard](https://iris-megazord.demo.community.intersystems.com/csp/preg-symp-tracker/doctor.csp) page.
 
 When you log in with a user having both roles, you can access all the pages.
 

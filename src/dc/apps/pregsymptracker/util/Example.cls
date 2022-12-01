@@ -15,25 +15,29 @@ ClassMethod CreateUsers()
     // a patient
     &SQL(drop user MarySmith)
     &SQL(create user MarySmith identified by 'marysmith')
-    &SQL(grant %DB_IRISAPP, %DB_IRISAPPSECONDARY, AppPatient to MarySmith)
+    &SQL(grant AppPatient to MarySmith)
+    &SQL(grant %DB_IRISAPP, %DB_IRISAPPSECONDARY to MarySmith)
     &SQL(grant select on schema dc_apps_pregsymptracker_data to MarySmith)
 
     // another patient
     &SQL(drop user SuzieMartinez)
     &SQL(create user SuzieMartinez identified by 'suziemartinez')
+    &SQL(grant AppPatient to SuzieMartinez)
     &SQL(grant %DB_IRISAPP, %DB_IRISAPPSECONDARY, AppPatient to SuzieMartinez)
     &SQL(grant select on schema dc_apps_pregsymptracker_data to SuzieMartinez)
 
     // a doctor
     &SQL(drop user PeterMorgan)
     &SQL(create user PeterMorgan identified by 'petermorgan')
-    &SQL(grant %DB_IRISAPP, %DB_IRISAPPSECONDARY, AppDoctor to PeterMorgan)
+    &SQL(grant AppDoctor to PeterMorgan)
+    &SQL(grant %DB_IRISAPP, %DB_IRISAPPSECONDARY to PeterMorgan)
     &SQL(grant select on schema dc_apps_pregsymptracker_data to PeterMorgan)
 
     // a doctor who is also a partient
     &SQL(drop user AnneJackson)
     &SQL(create user AnneJackson identified by 'annejackson')
-    &SQL(grant %DB_IRISAPP, %DB_IRISAPPSECONDARY, AppDoctor, AppPatient to AnneJackson)
+    &SQL(grant AppDoctor, AppPatient to AnneJackson)
+    &SQL(grant %DB_IRISAPP, %DB_IRISAPPSECONDARY to SuzieMartinez)
     &SQL(grant select on schema dc_apps_pregsymptracker_data to AnneJackson)
 }
 
