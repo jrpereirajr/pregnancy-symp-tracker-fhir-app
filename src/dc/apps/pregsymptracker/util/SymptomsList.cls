@@ -72,4 +72,41 @@ ClassMethod SymptomGeneric()
     )
 }
 
+ClassMethod SymptomBodyWeight()
+{
+    Do ..CreateSymptom(
+        "Body weight", {
+            "coding": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "29463-7",
+                    "display": "Body Weight"
+                },
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "27113001",
+                    "display": "Body weight"
+                }
+            ],
+            "text": "Body weight"
+        }.%ToJSON()
+    )
+}
+
+ClassMethod SymptomBodyHeight()
+{
+    Do ..CreateSymptom(
+        "Body height", {
+            "coding": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "8302-2",
+                    "display": "Body height"
+                }
+            ],
+            "text": "Body height"
+        }.%ToJSON()
+    )
+}
+
 }
