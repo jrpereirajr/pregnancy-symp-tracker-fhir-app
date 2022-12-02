@@ -37,7 +37,7 @@ ClassMethod CreateUsers()
     &SQL(drop user AnneJackson)
     &SQL(create user AnneJackson identified by 'annejackson')
     &SQL(grant AppDoctor, AppPatient to AnneJackson)
-    &SQL(grant %DB_IRISAPP, %DB_IRISAPPSECONDARY to SuzieMartinez)
+    &SQL(grant %DB_IRISAPP, %DB_IRISAPPSECONDARY to AnneJackson)
     &SQL(grant select on schema dc_apps_pregsymptracker_data to AnneJackson)
 }
 
