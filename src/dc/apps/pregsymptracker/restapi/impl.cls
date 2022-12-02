@@ -9,7 +9,7 @@ Parameter ExposeServerExceptions = 1;
 ClassMethod ConfigTest()
 {
     Set ^restapi.FHIRaaSClient = {"config": {
-        "Server": "fhir.ghim09twjq5g.static-test-account.isccloud.io",
+        "Server": "fhir.b36p2oiewusx.workload-prod-fhiraas.isccloud.io",
         "Port": 443,
         "UseHTTPS": 1,
         "SSLConfig": "default",
