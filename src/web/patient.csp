@@ -250,7 +250,7 @@ Return 1
                            <div class="iq-card">
                               <div class="iq-card-header d-flex justify-content-between">
                                  <div class="iq-header-title">
-                                    <h4 class="card-title">Symptom</h4>
+                                    <h4 class="card-title">Symptom/Observation</h4>
                                  </div>
                               </div>
                               <div class="iq-card-body">
@@ -286,7 +286,7 @@ Return 1
                            <div class="iq-card">
                               <div class="iq-card-header d-flex justify-content-between">
                                  <div class="iq-header-title">
-                                    <h4 class="card-title">Symptoms history</h4>
+                                    <h4 class="card-title">Symptoms/Observations history</h4>
                                  </div>
                               </div>
                               <div class="iq-card-body">

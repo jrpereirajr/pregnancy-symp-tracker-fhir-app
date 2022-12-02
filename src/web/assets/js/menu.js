@@ -10,7 +10,7 @@ const createMenu = () => {
             type: "menu-item",
             href: "patient.csp",
             cssClass: "ri-group-fill",
-            label: "My symptoms"
+            label: "symptoms/observations"
         },{
             type: "menu-item",
             href: "dashboardpatient.csp",
