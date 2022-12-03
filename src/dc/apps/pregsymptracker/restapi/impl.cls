@@ -106,7 +106,7 @@ ClassMethod GetOpenAPISpec() As %Stream.Object
     Set xdataID = "dc.apps.pregsymptracker.restapi.spec||OpenAPI"
     Set compiledXdata = ##class(%Dictionary.CompiledXData).%OpenId(xdataID)
     Set tStream = compiledXdata.Data
-    If '$IsObject(tStream) Set tSC=%objlasterror Quit
+    If '$IsObject(tStream) Set tSC=%objlasterror Return {}
     Set dynObject = {}.%FromJSON(tStream)
     Return dynObject.%ToJSON()
 }
