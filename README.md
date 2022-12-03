@@ -1,6 +1,6 @@
  [![Gitter](https://img.shields.io/badge/Available%20on-Intersystems%20Open%20Exchange-00b2a9.svg)](https://openexchange.intersystems.com/package/pregnancy-symp-tracker-fhir-app)
- [![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=jrpereirajr/pregnancy-symp-tracker-fhir-app&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=jrpereirajr/pregnancy-symp-tracker-fhir-app)
- [![Reliability Rating](https://community.objectscriptquality.com/api/project_badges/measure?project=jrpereirajr/pregnancy-symp-tracker-fhir-app&metric=reliability_rating)](https://community.objectscriptquality.com/dashboard?id=jrpereirajr/pregnancy-symp-tracker-fhir-app)
+ [![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Fpregnancy-symp-tracker-fhir-app&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fpregnancy-symp-tracker-fhir-app)
+ [![Reliability Rating](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Fpregnancy-symp-tracker-fhir-app&metric=reliability_rating)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fpregnancy-symp-tracker-fhir-app)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat&logo=AdGuard)](LICENSE)
 
