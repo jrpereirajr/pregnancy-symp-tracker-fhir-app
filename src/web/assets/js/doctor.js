@@ -31,7 +31,7 @@ const drawPatientList = (patients) => {
                         <img class="rounded-circle img-fluid avatar-40" src="images/user/02.jpg" alt="profile">
                     </td>
                    <td>${patient.resource.name[0].given[0]}</td>
-                   <td>${resp.entry.map(symptom => symptom.resource.code.text).join(", ")}</td>
+                   <td>${resp.entry.map(symptom => getSymptomValue(symptom)).join(", ")}</td>
                 </tr>
                 `;
             });
@@ -53,4 +53,16 @@ const drawPatientList = (patients) => {
         </table>
         `
     })
+}
+
+const getSymptomValue = (observation) => {
+    let complement = "";
+    if (observation.resource.valueString) {
+        complement = `(${observation.resource.valueString})`
+    }
+    if (observation.resource.valueQuantity) {
+        const valueQuantity = observation.resource.valueQuantity;
+        complement = `(${valueQuantity.value} ${valueQuantity.unit})`
+    }
+    return `${observation.resource.code.text} ${complement}`;
 }
