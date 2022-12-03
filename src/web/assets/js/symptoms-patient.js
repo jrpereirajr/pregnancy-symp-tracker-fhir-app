@@ -18,6 +18,14 @@ const BASE_URL = "/csp/preg-symp-tracker/api";
 const PAGE_SIZE = 10;
 const relationLinks = {};
 let SYMPTOMS_OPTIONS = {};
+const GENERIC_SYMPTOM = "Generic complaint";
+const BODY_WEIGHT = "Body weight";
+const BODY_HEIGTH = "Body height";
+const genericSymptomsList = [
+    GENERIC_SYMPTOM,
+    BODY_WEIGHT,
+    BODY_HEIGTH
+];
 
 const windowOnLoad = (evt) => {
     loadSymptomsList()
@@ -30,7 +38,7 @@ const symptomsSelectorOnChange = (evt) => {
     const symptomId = evt.target.value;
     const genericSymptom = document.getElementById("genericSymptom");
     genericSymptom.value = "";
-    genericSymptom.style.display = symptomId == "Generic complaint" ? "" : "none";
+    genericSymptom.style.display = genericSymptomsList.indexOf(symptomId) > -1 ? "" : "none";
 }
 
 const btnSaveSymptomOnClick = (evt) => {
@@ -97,25 +105,16 @@ const getSymptoms = (fhirSearchParams) => {
         .then(response => response.json())
         .then(response => {
             getRelationsFHIRSearchParams(response);
-            return Promise.resolve(
-                getCodeArrayFromObservation(response)
-            );
+            return response.entry;
         });
 }
 
-const getCodeArrayFromObservation = (observation) => {
-    return observation.entry.map(entry => ({
-        "id": entry.resource.id,
-        "code": entry.resource.code,
-        "effectiveDateTime": new Date(entry.resource.effectiveDateTime).toLocaleString()
-    }));
-}
-
 const postSymptom = (symptom, effectiveDateTime) => {
-    return httpPost(`${BASE_URL}/symptom`, {
+    const payload = Object.assign({
         "code": symptom,
         "effectiveDateTime": effectiveDateTime || new Date().toISOString()
-    });
+    }, getSymptomValue());
+    return httpPost(`${BASE_URL}/symptom`, payload);
 }
 
 const getSymptom = (id) => {
@@ -124,11 +123,12 @@ const getSymptom = (id) => {
 }
 
 const putSymptom = (id, symptom, effectiveDateTime) => {
-    return httpPut(`${BASE_URL}/symptom?id=${id}`, {
+    const payload = Object.assign({
         "id": id,
         "code": symptom,
         "effectiveDateTime": effectiveDateTime || new Date().toISOString()
-    });
+    }, getSymptomValue());
+    return httpPut(`${BASE_URL}/symptom?id=${id}`, payload);
 }
 
 const deleteSymptom = (id) => {
@@ -139,17 +139,30 @@ const drawLoading = (el, msg) => {
     el.innerHTML = `<span>${msg}</span>`
 }
 
-const getSymptomDescription = (code) => code.text || code.coding[0].display;
+const getSymptomCodeDescription = (code) => code.text || code.coding[0].display;
+
+const getSymptomDescription = (symptom) => {
+    let complement = "";
+    if (symptom.resource.valueString) {
+        complement = `(${symptom.resource.valueString})`
+    }
+    if (symptom.resource.valueQuantity) {
+        const valueQuantity = symptom.resource.valueQuantity;
+        complement = `(${valueQuantity.value} ${valueQuantity.unit})`
+    }
+    const desc = `${symptom.resource.code.text || symptom.resource.code.coding[0].display} ${complement}`;
+    return desc;
+}
 
 const drawSymptoms = (el, symptoms) => {
     el.innerHTML = symptoms.map(symptom => `
     <li>
        <div class="timeline-dots border-primary"></div>
-       <h6 class="">${getSymptomDescription(symptom.code)}</h6>
-       <small class="mt-1">${symptom.effectiveDateTime}</small>
+       <h6 class="">${getSymptomDescription(symptom)}</h6>
+       <small class="mt-1">${symptom.resource.effectiveDateTime}</small>
        <div>
-          <a href="#void" onclick="editSymptom(${symptom.id})" class="btn iq-bg-primary">Edit</a>
-          <a href="#void" onclick="removeSymptom(${symptom.id})" class="btn iq-bg-danger">Delete</a>
+          <a href="#void" onclick="editSymptom(${symptom.resource.id})" class="btn iq-bg-primary">Edit</a>
+          <a href="#void" onclick="removeSymptom(${symptom.resource.id})" class="btn iq-bg-danger">Delete</a>
        </div>
     </li>
     </table>
@@ -163,6 +176,10 @@ const editSymptom = (id) => {
 
         const symptomsSelector = document.getElementById("symptomsSelector");
         symptomsSelector.value = response.code.text;
+
+        const event = new Event('change');
+        symptomsSelector.dispatchEvent(event);
+        setSymptomValue(response);
 
         const dateSymptom = document.getElementById("dateSymptom");
         dateSymptom.value = response.effectiveDateTime.split("T")[0];
@@ -194,7 +211,7 @@ const loadSymptomsList = () => {
 const createSymptomsList = () => {
     const symptomsList = document.getElementById("symptomsList");
     symptomsList.innerHTML = Object.keys(SYMPTOMS_OPTIONS).map(key =>
-        `<option value="${getSymptomDescription(SYMPTOMS_OPTIONS[key])}"></option>`
+        `<option value="${getSymptomCodeDescription(SYMPTOMS_OPTIONS[key])}"></option>`
     );
 }
 
@@ -218,9 +235,10 @@ const defaultOkHandling = () => {
 }
 
 const defaultErrorhandling = (error) => {
-    error.text().then(msg => {
-        showMsg(msg || `${error.statusText} (${error.status})`);
-    });
+    // error.text().then(msg => {
+    //     showMsg(msg || `${error.statusText} (${error.status})`);
+    // });
+    console.error(error)
 }
 
 const getSymptomOption = () => {
@@ -232,11 +250,48 @@ const getSymptomOption = () => {
     if (!symptom) {
         throw new Error(`Symptom unknow: ${symptomId}`)
     }
-    if (symptomId == "Generic complaint") {
-        const genericSymptom = document.getElementById("genericSymptom");
-        symptom.text = genericSymptom.value || symptom.text;
-    }
     return symptom;
+}
+
+const setSymptomValue = (observation) => {
+    const symptomId = document.getElementById("symptomsSelector").value;
+    const genericSymptom = document.getElementById("genericSymptom");
+    if (symptomId == GENERIC_SYMPTOM) {
+        genericSymptom.value = observation.valueString;
+    } else if (symptomId == BODY_WEIGHT) {
+        genericSymptom.value = observation.valueQuantity.value;
+    } else if (symptomId == BODY_HEIGTH) {
+        genericSymptom.value = observation.valueQuantity.value;
+    }
+}
+
+const getSymptomValue = () => {
+    const symptomId = document.getElementById("symptomsSelector").value;
+    const genericSymptom = document.getElementById("genericSymptom");
+    if (symptomId == GENERIC_SYMPTOM) {
+        return {
+            "valueString": genericSymptom.value
+        };
+    } else if (symptomId == BODY_WEIGHT) {
+        return {
+            "valueQuantity": {
+                "value": parseFloat(genericSymptom.value),
+                "unit": "kg",
+                "system": "http://unitsofmeasure.org",
+                "code": "kg"
+            }
+        };
+    } else if (symptomId == BODY_HEIGTH) {
+        return {
+            "valueQuantity": {
+                "value": parseFloat(genericSymptom.value),
+                "unit": "m",
+                "system": "http://unitsofmeasure.org",
+                "code": "m"
+            }
+        };
+    }
+    return;
 }
 
 const getSymptomDateTime = () => {
@@ -276,6 +331,9 @@ const drawNavLabel = () => {
 const clearForm = () => {
     const symptomsSelector = document.getElementById("symptomsSelector");
     symptomsSelector.value = "";
+    
+    const genericSymptom = document.getElementById("genericSymptom");
+    genericSymptom.value = "";
 
     const dateSymptom = document.getElementById("dateSymptom");
     dateSymptom.value = new Date().toISOString().split("T")[0];

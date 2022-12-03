@@ -89,6 +89,8 @@ ClassMethod GetObservationFromBody(body As %DynamicObject) As %DynamicObject
     Set observation.code = body.code
     Set observation.subject.reference = "Patient/"_..GetCurrentPatientId()
     Set observation.effectiveDateTime = body.effectiveDateTime
+    Set:(body.%IsDefined("valueQuantity") && (body.valueQuantity '= "")) observation.valueQuantity = body.valueQuantity
+    Set:(body.%IsDefined("valueString") && (body.valueString '= "")) observation.valueString = body.valueString
     Return observation
 }
 
