@@ -220,7 +220,7 @@ const updateSymptomsGrid = (fhirSearchParams) => {
 
     const filter = fhirSearchParams ? fhirSearchParams : new FHIRSearchParams();
     filter._count = PAGE_SIZE;
-    filter._sort = "-date";
+    filter._sort = "-_id";
     getSymptoms(filter).then(symptoms => {
         console.log(symptoms);
         drawSymptoms(divSymptoms, symptoms);

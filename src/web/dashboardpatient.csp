@@ -196,6 +196,23 @@ Return 1
 
                         </div>
                     </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="iq-card">
+                                    <div class="iq-card-header d-flex justify-content-between">
+                                        <div class="iq-header-title">
+                                            <h4 class="card-title">BMI history</h4>
+                                        </div>
+                                    </div>
+                                    <div class="iq-card-body">
+                                        <div id="bmi-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                 </div>
 

@@ -11,7 +11,8 @@ ClassMethod Main()
     For iMethod = 1:1:lenMethods {
         #Dim method As %Dictionary.MethodDefinition = classDef.Methods.GetAt(iMethod)
         If ($MATCH(method.Name, "^Symptom.*")) {
-            Do $CLASSMETHOD(..%ClassName(1), method.Name)
+            Set symptom = $CLASSMETHOD(..%ClassName(1), method.Name)
+            Do ..CreateSymptom(symptom.key, symptom.def.%ToJSON())
         }
     }
 }
@@ -21,13 +22,14 @@ ClassMethod CreateSymptom(pKey As %String, pJSONDef As %String)
     Set symptom = ##class(dc.apps.pregsymptracker.data.SymptomsList).%New()
     Set symptom.Key = pKey
     Set symptom.JSONDef = pJSONDef
-    $$$TOE(st, symptom.%Save())
+    $$$TOE(st, symptom.%Save(symptom))
 }
 
 ClassMethod SymptomVomiting()
 {
-    Do ..CreateSymptom(
-        "Vomiting", {
+    Return {
+        "key": "Vomiting", 
+        "def": {
             "coding": [
                 {
                     "system": "http://loinc.org",
@@ -36,14 +38,15 @@ ClassMethod SymptomVomiting()
                 }
             ],
             "text": "Vomiting"
-        }.%ToJSON()
-    )
+        }
+    }
 }
 
 ClassMethod SymptomFever()
 {
-    Do ..CreateSymptom(
-        "Fever", {
+    Return {
+        "key": "Fever", 
+        "def": {
             "coding": [
                 {
                     "system": "http://snomed.info/sct",
@@ -52,14 +55,15 @@ ClassMethod SymptomFever()
                 }
             ],
             "text": "Fever"
-        }.%ToJSON()
-    )
+        }
+    }
 }
 
 ClassMethod SymptomGeneric()
 {
-    Do ..CreateSymptom(
-        "Generic complaint", {
+    Return {
+        "key": "Generic complaint", 
+        "def": {
             "coding": [
                 {
                     "system": "http://snomed.info/sct",
@@ -68,14 +72,15 @@ ClassMethod SymptomGeneric()
                 }
             ],
             "text": "Generic complaint"
-        }.%ToJSON()
-    )
+        }
+    }
 }
 
 ClassMethod SymptomBodyWeight()
 {
-    Do ..CreateSymptom(
-        "Body weight", {
+    Return {
+        "key": "Body weight", 
+        "def": {
             "coding": [
                 {
                     "system": "http://loinc.org",
@@ -89,14 +94,15 @@ ClassMethod SymptomBodyWeight()
                 }
             ],
             "text": "Body weight"
-        }.%ToJSON()
-    )
+        }
+    }
 }
 
 ClassMethod SymptomBodyHeight()
 {
-    Do ..CreateSymptom(
-        "Body height", {
+    Return {
+        "key": "Body height", 
+        "def": {
             "coding": [
                 {
                     "system": "http://loinc.org",
@@ -105,8 +111,8 @@ ClassMethod SymptomBodyHeight()
                 }
             ],
             "text": "Body height"
-        }.%ToJSON()
-    )
+        }
+    }
 }
 
 }

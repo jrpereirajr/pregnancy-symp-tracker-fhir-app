@@ -9,6 +9,22 @@ Method CreateRequest()
     })
 }
 
+Method HTTPPost(pPath As %String, pBody As %DynamicObject) As %Net.HttpResponse
+{
+    Set response = ##super(pPath, pBody)
+    Set bmiHandler = ##class(dc.apps.pregsymptracker.restapi.BMIFHIRHandler).%New()
+    Set pBody = bmiHandler.ProcessFHIRMessage(pBody)
+    Return response
+}
+
+Method HTTPPut(pPath As %String, pBody As %DynamicObject) As %Net.HttpResponse
+{
+    Set response = ##super(pPath, pBody)
+    Set bmiHandler = ##class(dc.apps.pregsymptracker.restapi.BMIFHIRHandler).%New()
+    Set pBody = bmiHandler.ProcessFHIRMessage(pBody)
+    Return response
+}
+
 ClassMethod Test()
 {
     Set o = ..%New()

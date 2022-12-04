@@ -4,6 +4,7 @@ const Dashboard = (function(){
     const BASE_URL = "/csp/preg-symp-tracker/api/symptoms";
 
     const BODY_WEIGHT = '29463-7';
+    const BMI = '39156-5';
     const BLOODPRESSURE = '85354-9';
 
     const getBloodPressure = () => {
@@ -16,6 +17,12 @@ const Dashboard = (function(){
         httpGet(`${BASE_URL}?code=${BODY_WEIGHT}`)
             .then(response => response.json())
             .then((bodyweight) => prepareBodyWeightChart(bodyweight))
+    }
+
+    const getBMI = () => {
+        httpGet(`${BASE_URL}?code=${BMI}`)
+            .then(response => response.json())
+            .then((bmi) => prepareBMIChart(bmi))
     }
 
     const prepareBloodPressureChart = (data) => {
@@ -95,6 +102,44 @@ const Dashboard = (function(){
             xaxis: xaxis})
     }
 
+    const prepareBMIChart = (data) => {
+        const datachart = {
+            "BMI": []
+        }, xaxis = [], series = [];
+        data.entry.forEach((e) => {
+            xaxis.push(e.resource.effectiveDateTime)
+            datachart["BMI"].push(e.resource.valueQuantity.value) 
+        });
+
+        Object.keys(datachart).forEach(key => {
+            series.push({name: key, data: datachart[key]})
+        })
+
+        drawChart({
+            chartId: "#bmi-chart",
+            chart: {
+                height: 350,
+                type: 'line',
+                dropShadow: {
+                    enabled: true,
+                    color: '#000',
+                    top: 18,
+                    left: 7,
+                    blur: 10,
+                    opacity: 0.2
+                },
+                toolbar: {
+                    show: false
+                }
+            },
+            colors: ['#77B6EA', '#545454'],
+            dataLabels: {
+                enabled: true,
+            },
+            series: series, 
+            xaxis: xaxis})
+    }
+
     const drawChart = (data) => {
         const options = {
         stroke: {
@@ -142,6 +187,6 @@ const Dashboard = (function(){
 
     getBloodPressure();
     getBodyWeight();
-
+    getBMI();
     
 }());
