@@ -12,6 +12,7 @@ Method ProcessFHIRMessage(pFHIRMessage As %DynamicObject) As %DynamicObject
         Set bodyWeightResource = ""
         Set bodyHeightResource = ""
         Set effectiveDateTime = ""
+        
         If (symptomKey = bodyWeightSymptom.key) {
             Set bodyHeightResource = ..GetMostRecentObservation(bodyHeightSymptom.def.coding.%Get(0).code)
             If (pFHIRMessage.id = "") {
@@ -20,6 +21,7 @@ Method ProcessFHIRMessage(pFHIRMessage As %DynamicObject) As %DynamicObject
                 Set bodyWeightResource = ..GetObservation(pFHIRMessage.id)
             }
             Set effectiveDateTime = bodyWeightResource.entry.%Get(0).resource.effectiveDateTime
+
         } ElseIf (symptomKey = bodyHeightSymptom.key) {
             Set bodyWeightResource = ..GetMostRecentObservation(bodyWeightSymptom.def.coding.%Get(0).code)
             If (pFHIRMessage.id = "") {

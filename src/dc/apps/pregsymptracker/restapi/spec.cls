@@ -232,6 +232,28 @@ XData OpenAPI [ MimeType = application/json ]
         }
       }
     },
+    "/symptoms/alert/bmi/obesity":{
+      "get":{
+        "operationId":"GetBMIAlerts",
+        "x-ISC_RequiredResource":[
+          "AppSymptoms:read"
+        ],
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Retrieves the current patient's BMI values that are in the CDC ranges of obesity (https://www.cdc.gov/obesity/basics/adult-defining.html#:~:text=If%20your%20BMI%20is%20less,falls%20within%20the%20obesity%20range.)",
+        "parameters":[
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
     "/doctor/patients":{
       "get":{
         "operationId":"GetDoctorPatientsList",
@@ -274,6 +296,28 @@ XData OpenAPI [ MimeType = application/json ]
             "required":true,
             "type":"integer"
           }
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
+    "/doctor/alert/bmi/obesity":{
+      "get":{
+        "operationId":"GetDoctorBMIAlerts",
+        "x-ISC_RequiredResource":[
+          "AppAccessDoctorPatients:read"
+        ],
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Retrieves the current doctor's patients BMI values that are in the CDC ranges of obesity (https://www.cdc.gov/obesity/basics/adult-defining.html#:~:text=If%20your%20BMI%20is%20less,falls%20within%20the%20obesity%20range.)",
+        "parameters":[
         ],
         "responses":{
           "200":{

@@ -156,9 +156,9 @@ const getSymptomDescription = (symptom) => {
 
 const drawSymptoms = (el, symptoms) => {
     el.innerHTML = symptoms.map(symptom => `
-    <li>
+    <li id="liSymptom${symptom.resource.id}">
        <div class="timeline-dots border-primary"></div>
-       <h6 class="">${getSymptomDescription(symptom)}</h6>
+       <h6 class="">${getSymptomDescription(symptom)} <span class="badge badge-danger"></span></h6>
        <small class="mt-1">${symptom.resource.effectiveDateTime}</small>
        <div>
           <a href="#void" onclick="editSymptom(${symptom.resource.id})" class="btn iq-bg-primary">Edit</a>
@@ -167,7 +167,23 @@ const drawSymptoms = (el, symptoms) => {
     </li>
     </table>
     `).join('');
+
     // drawNavLabel();
+
+    httpGet(`${BASE_URL}/symptoms/alert/bmi/obesity`)
+    .then(response => response.json())
+    .then(response => {
+        response.entry.forEach(entry => {
+            setSymptomListItemBadge(`liSymptom${entry.resource.id}`, "Obesity", "badge-danger")
+        })
+    });
+}
+
+const setSymptomListItemBadge = (liSymptomId, text, className) => {
+    const badge = document.querySelector(`#${liSymptomId} h6 span`);
+    if (!badge) return;
+    badge.innerText = text;
+    badge.className = `badge ${className}`;
 }
 
 const editSymptom = (id) => {

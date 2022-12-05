@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 29, 2022 23:57:33
+/// Updated Dec 4, 2022 23:28:49
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -42,9 +42,11 @@ ClassMethod CopyHeaders(pFHIRResponse As %Net.HttpResponse)
     } While (header '= "")
 }
 
-ClassMethod GetObservationPath(pId As %String = "", pPatientId As %String = "") As %String
+ClassMethod GetObservationPath(pId As %String = "", pPatientId As %String = "", pQueryString As %String = "") As %String
 {
-    Set querystring = %request.CgiEnvs("QUERY_STRING")
+    Set querystring = pQueryString
+    #; Set:(querystring '= "") querystring = querystring_"&"
+    Set querystring = querystring_%request.CgiEnvs("QUERY_STRING")
 
     // remove invalid Observation parameters
     Set re = ##class(%Regex.Matcher).%New("PatientId=.*?&", querystring)
@@ -162,6 +164,22 @@ ClassMethod GetDoctorPatientSymptomsList(PatientId As %Integer) As %Stream.Objec
 {
     // todo: validate if pPatientId is a current doctor's patient
     Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath("", PatientId))
+}
+
+/// Retrieves the current patient's BMI values that are in the CDC ranges of obesity (https://www.cdc.gov/obesity/basics/adult-defining.html#:~:text=If%20your%20BMI%20is%20less,falls%20within%20the%20obesity%20range.)
+ClassMethod GetBMIAlerts() As %Stream.Object
+{
+    Set qs = "code=39156-5&value-quantity=ge30"
+    Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath(, , qs))
+}
+
+/// Retrieves the current doctor's patients BMI values that are in the CDC ranges of obesity (https://www.cdc.gov/obesity/basics/adult-defining.html#:~:text=If%20your%20BMI%20is%20less,falls%20within%20the%20obesity%20range.)
+ClassMethod GetDoctorBMIAlerts() As %Stream.Object
+{
+    Set qs = "code=39156-5&value-quantity=ge30"
+    Set doctorId = $USERNAME
+    Set patientsIdList = ##class(dc.apps.pregsymptracker.data.PatientDoctor).GetPatientsFromDoctor(doctorId)
+    Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath(, patientsIdList, qs))
 }
 
 /// Retrieves a list with the Patient symptoms handled by the application
