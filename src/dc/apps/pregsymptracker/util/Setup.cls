@@ -21,8 +21,8 @@ ClassMethod CreateResources()
         ZN "%SYS"
         Do $CLASSMETHOD("Security.Resources", "Delete", "AppSymptoms")
         Do $CLASSMETHOD("Security.Resources", "Delete", "AppAccessDoctorPatients")
-        $$$TOE(st, $CLASSMETHOD("Security.Resources", "Create", "AppSymptoms", "Patient symptoms", "RWU", ""))
-        $$$TOE(st, $CLASSMETHOD("Security.Resources", "Create", "AppAccessDoctorPatients", "Patients access rights", "RWU", ""))
+        $$$TOE(st, $CLASSMETHOD("Security.Resources", "Create", "AppSymptoms", "Patient symptoms", "", ""))
+        $$$TOE(st, $CLASSMETHOD("Security.Resources", "Create", "AppAccessDoctorPatients", "Patients access rights", "", ""))
     } Catch(e) {
         ZN ns
         Throw e
