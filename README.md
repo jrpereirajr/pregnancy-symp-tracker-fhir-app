@@ -25,6 +25,11 @@ This application uses InterSystems technologies in order to help pregnant women 
 
 This application was developed for the InterSystems IRIS for Health Contest: FHIR for Women's Health.
 
+More information in these articles:
+
+* [The motivation behind Pregnancy Symptoms Tracker](https://community.intersystems.com/post/motivation-behind-pregnancy-symptoms-tracker)
+* [IS technologies supporting the Pregnancy Symptoms Tracker app](https://community.intersystems.com/post/technologies-supporting-pregnancy-symptoms-tracker-app)
+
 ## Online demo
 
 You can try the app without any installation [here](https://iris-megazord.demo.community.intersystems.com/csp/preg-symp-tracker/index.csp).
