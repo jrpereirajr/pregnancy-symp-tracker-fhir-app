@@ -1,5 +1,5 @@
 /// Business logic class defined by OpenAPI in dc.apps.pregsymptracker.restapi.spec<br/>
-/// Updated Nov 27, 2022 01:25:47
+/// Updated Dec 4, 2022 23:28:49
 Class dc.apps.pregsymptracker.restapi.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
@@ -9,7 +9,7 @@ Parameter ExposeServerExceptions = 1;
 ClassMethod ConfigTest()
 {
     Set ^restapi.FHIRaaSClient = {"config": {
-        "Server": "fhir.fkwlwiygbul2.static-test-account.isccloud.io",
+        "Server": "fhir.b36p2oiewusx.workload-prod-fhiraas.isccloud.io",
         "Port": 443,
         "UseHTTPS": 1,
         "SSLConfig": "default",
@@ -42,12 +42,22 @@ ClassMethod CopyHeaders(pFHIRResponse As %Net.HttpResponse)
     } While (header '= "")
 }
 
-ClassMethod GetObservationPath(pId As %String = "") As %String
+ClassMethod GetObservationPath(pId As %String = "", pPatientId As %String = "", pQueryString As %String = "") As %String
 {
-    Set querystring = %request.CgiEnvs("QUERY_STRING")
+    Set querystring = pQueryString
+    #; Set:(querystring '= "") querystring = querystring_"&"
+    Set querystring = querystring_%request.CgiEnvs("QUERY_STRING")
+
+    // remove invalid Observation parameters
+    Set re = ##class(%Regex.Matcher).%New("PatientId=.*?&", querystring)
+    Set querystring = re.ReplaceFirst("")
+    Set re = ##class(%Regex.Matcher).%New("&PatientId=.*?", querystring)
+    Set querystring = re.ReplaceFirst("")
+
     Set path = "/Observation"
     Set:(pId '= "") path = path_"/"_pId
-    Set path = path_"?patient=Patient/"_..GetCurrentPatientId()
+    Set:(pPatientId = "") pPatientId = ..GetCurrentPatientId()
+    Set path = path_"?patient="_pPatientId
     Set:(querystring '= "") path = path_"&"_querystring
     return path
 }
@@ -81,6 +91,8 @@ ClassMethod GetObservationFromBody(body As %DynamicObject) As %DynamicObject
     Set observation.code = body.code
     Set observation.subject.reference = "Patient/"_..GetCurrentPatientId()
     Set observation.effectiveDateTime = body.effectiveDateTime
+    Set:(body.%IsDefined("valueQuantity") && (body.valueQuantity '= "")) observation.valueQuantity = body.valueQuantity
+    Set:(body.%IsDefined("valueString") && (body.valueString '= "")) observation.valueString = body.valueString
     Return observation
 }
 
@@ -93,11 +105,10 @@ ClassMethod GetCurrentPatientId() As %String
 /// OpenAPI definition
 ClassMethod GetOpenAPISpec() As %Stream.Object
 {
-    Do ..%SetStatusCode(200)
     Set xdataID = "dc.apps.pregsymptracker.restapi.spec||OpenAPI"
     Set compiledXdata = ##class(%Dictionary.CompiledXData).%OpenId(xdataID)
     Set tStream = compiledXdata.Data
-    If '$IsObject(tStream) Set tSC=%objlasterror Quit
+    If '$IsObject(tStream) Set tSC=%objlasterror Return {}
     Set dynObject = {}.%FromJSON(tStream)
     Return dynObject.%ToJSON()
 }
@@ -138,10 +149,42 @@ ClassMethod DeleteSymptom(id As %Integer) As %Stream.Object
     Return ..FHIRaaSCall("HTTPDelete", ..GetObservationPath(id))
 }
 
+/// Get the patientes of the current logged doctor
+ClassMethod GetDoctorPatientsList() As %Stream.Object
+{
+    Set doctorId = $USERNAME
+    Set patientsIdList = ##class(dc.apps.pregsymptracker.data.PatientDoctor).GetPatientsFromDoctor(doctorId)
+    Return ..FHIRaaSCall("HTTPGet", "/Patient?_id="_patientsIdList)
+}
+
+/// Get the symptoms of the doctor's patients<br/>
+/// The method arguments hold values for:<br/>
+///     PatientId<br/>
+ClassMethod GetDoctorPatientSymptomsList(PatientId As %Integer) As %Stream.Object
+{
+    // todo: validate if pPatientId is a current doctor's patient
+    Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath("", PatientId))
+}
+
+/// Retrieves the current patient's BMI values that are in the CDC ranges of obesity (https://www.cdc.gov/obesity/basics/adult-defining.html#:~:text=If%20your%20BMI%20is%20less,falls%20within%20the%20obesity%20range.)
+ClassMethod GetBMIAlerts() As %Stream.Object
+{
+    Set qs = "code=39156-5&value-quantity=ge30"
+    Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath(, , qs))
+}
+
+/// Retrieves the current doctor's patients BMI values that are in the CDC ranges of obesity (https://www.cdc.gov/obesity/basics/adult-defining.html#:~:text=If%20your%20BMI%20is%20less,falls%20within%20the%20obesity%20range.)
+ClassMethod GetDoctorBMIAlerts() As %Stream.Object
+{
+    Set qs = "code=39156-5&value-quantity=ge30"
+    Set doctorId = $USERNAME
+    Set patientsIdList = ##class(dc.apps.pregsymptracker.data.PatientDoctor).GetPatientsFromDoctor(doctorId)
+    Return ..FHIRaaSCall("HTTPGet", ..GetObservationPath(, patientsIdList, qs))
+}
+
 /// Retrieves a list with the Patient symptoms handled by the application
 ClassMethod GetSymptomsList() As %Stream.Object
 {
-    Do ..%SetStatusCode(200)
     Set symptomsList = ##class(dc.apps.pregsymptracker.data.SymptomsList).GetSymptomList()
     Return symptomsList
 }

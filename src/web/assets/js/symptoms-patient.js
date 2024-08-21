@@ -7,7 +7,7 @@ document.getElementById("symptomsSelector").onchange = (evt) => {
 };
 
 document.getElementById("btnSave").onclick = (evt) => {
-    btnPostSymptomOnClick(evt);
+    btnSaveSymptomOnClick(evt);
 }
 
 document.getElementById("btnClear").onclick = (evt) => {
@@ -18,30 +18,14 @@ const BASE_URL = "/csp/preg-symp-tracker/api";
 const PAGE_SIZE = 10;
 const relationLinks = {};
 let SYMPTOMS_OPTIONS = {};
-
-class FHIRSearchParams {
-    _count;
-    _sort;
-    page;
-    queryId;
-
-    getSearchExpression() {
-        let filter = [];
-        if (this._count) {
-            filter.push(`_count=${this._count}`);
-        }
-        if (this._sort) {
-            filter.push(`_sort=${this._sort}`);
-        }
-        if (this.page) {
-            filter.push(`page=${this.page}`);
-        }
-        if (this.queryId) {
-            filter.push(`queryId=${this.queryId}`);
-        }
-        return filter.join("&");
-    }
-}
+const GENERIC_SYMPTOM = "Generic complaint";
+const BODY_WEIGHT = "Body weight";
+const BODY_HEIGTH = "Body height";
+const genericSymptomsList = [
+    GENERIC_SYMPTOM,
+    BODY_WEIGHT,
+    BODY_HEIGTH
+];
 
 const windowOnLoad = (evt) => {
     loadSymptomsList()
@@ -54,10 +38,10 @@ const symptomsSelectorOnChange = (evt) => {
     const symptomId = evt.target.value;
     const genericSymptom = document.getElementById("genericSymptom");
     genericSymptom.value = "";
-    genericSymptom.style.display = symptomId == "Generic complaint" ? "" : "none";
+    genericSymptom.style.display = genericSymptomsList.indexOf(symptomId) > -1 ? "" : "none";
 }
 
-const btnPostSymptomOnClick = (evt) => {
+const btnSaveSymptomOnClick = (evt) => {
     const symptom = getSymptomOption();
     const effectiveDateTime = getSymptomDateTime();
     if (!window.editingId) {
@@ -77,85 +61,10 @@ const btnPostSymptomOnClick = (evt) => {
     }
 }
 
-const btnGetSymptomOnClick = (evt) => {
-    const id = document.getElementById("txtSymptomID").value;
-    getSymptom(id)
-        .then((response) => {
-            showMsg(JSON.stringify(response));
-        })
-        .catch((error) => defaultErrorhandling(error));
-}
-
-const btnPutSymptomOnClick = (evt) => {
-    const id = document.getElementById("txtSymptomID").value;
-    const symptom = getSymptomOption();
-    const effectiveDateTime = getSymptomDateTime();
-    putSymptom(id, symptom, effectiveDateTime)
-        .then(() => defaultOkHandling())
-        .catch((error) => defaultErrorhandling(error));
-}
-
-const btnDeleteSymptomOnClick = (evt) => {
-    const id = document.getElementById("txtSymptomID").value;
-    deleteSymptom(id)
-        .then(() => defaultOkHandling())
-        .catch((error) => defaultErrorhandling(error));
-}
-
 const showMsg = (msg) => {
     // const msgBox = document.getElementById("msgBox");
     // msgBox.innerText = msg;
     alert(msg);
-}
-
-const httpGet = (url) => {
-    return fetch(url).then(response => {
-        if (!response.ok) {
-            return Promise.reject(response);
-        }
-        return response;
-    });
-}
-
-const httpPost = (url, data) => {
-    return fetch(url, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    }).then(response => {
-        if (!response.ok) {
-            return Promise.reject(response);
-        }
-        return response;
-    });
-}
-
-const httpPut = (url, data) => {
-    return fetch(url, {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    }).then(response => {
-        if (!response.ok) {
-            return Promise.reject(response);
-        }
-        return response;
-    });
-}
-
-const httpDelete = (url) => {
-    return fetch(url, {
-        method: "DELETE"
-    }).then(response => {
-        if (!response.ok) {
-            return Promise.reject(response);
-        }
-        return response;
-    });
 }
 
 const getRelationURL = (response, pRelationType) => {
@@ -196,25 +105,16 @@ const getSymptoms = (fhirSearchParams) => {
         .then(response => response.json())
         .then(response => {
             getRelationsFHIRSearchParams(response);
-            return Promise.resolve(
-                getCodeArrayFromObservation(response)
-            );
+            return response.entry;
         });
 }
 
-const getCodeArrayFromObservation = (observation) => {
-    return observation.entry.map(entry => ({
-        "id": entry.resource.id,
-        "code": entry.resource.code,
-        "effectiveDateTime": new Date(entry.resource.effectiveDateTime).toLocaleString()
-    }));
-}
-
 const postSymptom = (symptom, effectiveDateTime) => {
-    return httpPost(`${BASE_URL}/symptom`, {
+    const payload = Object.assign({
         "code": symptom,
         "effectiveDateTime": effectiveDateTime || new Date().toISOString()
-    });
+    }, getSymptomValue());
+    return httpPost(`${BASE_URL}/symptom`, payload);
 }
 
 const getSymptom = (id) => {
@@ -223,11 +123,12 @@ const getSymptom = (id) => {
 }
 
 const putSymptom = (id, symptom, effectiveDateTime) => {
-    return httpPut(`${BASE_URL}/symptom?id=${id}`, {
+    const payload = Object.assign({
         "id": id,
         "code": symptom,
         "effectiveDateTime": effectiveDateTime || new Date().toISOString()
-    });
+    }, getSymptomValue());
+    return httpPut(`${BASE_URL}/symptom?id=${id}`, payload);
 }
 
 const deleteSymptom = (id) => {
@@ -238,22 +139,51 @@ const drawLoading = (el, msg) => {
     el.innerHTML = `<span>${msg}</span>`
 }
 
-const getSymptomDescription = (code) => code.text || code.coding[0].display;
+const getSymptomCodeDescription = (code) => code.text || code.coding[0].display;
+
+const getSymptomDescription = (symptom) => {
+    let complement = "";
+    if (symptom.resource.valueString) {
+        complement = `(${symptom.resource.valueString})`
+    }
+    if (symptom.resource.valueQuantity) {
+        const valueQuantity = symptom.resource.valueQuantity;
+        complement = `(${valueQuantity.value} ${valueQuantity.unit})`
+    }
+    const desc = `${symptom.resource.code.text || symptom.resource.code.coding[0].display} ${complement}`;
+    return desc;
+}
 
 const drawSymptoms = (el, symptoms) => {
     el.innerHTML = symptoms.map(symptom => `
     <li>
-        <div class="timeline-dots border-primary"></div>
-        <h6 class="">${getSymptomDescription(symptom.code)}</h6>
-        <small class="mt-1">${symptom.effectiveDateTime}</small>
-        <div>
-            <a href="#void" onclick="editSymptom(${symptom.id})" class="btn iq-bg-primary">Edit</a>
-            <a href="#void" onclick="removeSymptom(${symptom.id})" class="btn iq-bg-danger">Delete</a>
-        </div>
+       <div class="timeline-dots border-primary"></div>
+       <h6 class="">${getSymptomDescription(symptom.code)}</h6>
+       <small class="mt-1">${symptom.effectiveDateTime}</small>
+       <div>
+          <a href="#void" onclick="editSymptom(${symptom.id})" class="btn iq-bg-primary">Edit</a>
+          <a href="#void" onclick="removeSymptom(${symptom.id})" class="btn iq-bg-danger">Delete</a>
+       </div>
     </li>
     </table>
     `).join('');
+
     // drawNavLabel();
+
+    httpGet(`${BASE_URL}/symptoms/alert/bmi/obesity`)
+    .then(response => response.json())
+    .then(response => {
+        response.entry.forEach(entry => {
+            setSymptomListItemBadge(`liSymptom${entry.resource.id}`, "Obesity", "badge-danger")
+        })
+    });
+}
+
+const setSymptomListItemBadge = (liSymptomId, text, className) => {
+    const badge = document.querySelector(`#${liSymptomId} h6 span`);
+    if (!badge) return;
+    badge.innerText = text;
+    badge.className = `badge ${className}`;
 }
 
 const editSymptom = (id) => {
@@ -262,6 +192,10 @@ const editSymptom = (id) => {
 
         const symptomsSelector = document.getElementById("symptomsSelector");
         symptomsSelector.value = response.code.text;
+
+        const event = new Event('change');
+        symptomsSelector.dispatchEvent(event);
+        setSymptomValue(response);
 
         const dateSymptom = document.getElementById("dateSymptom");
         dateSymptom.value = response.effectiveDateTime.split("T")[0];
@@ -293,7 +227,7 @@ const loadSymptomsList = () => {
 const createSymptomsList = () => {
     const symptomsList = document.getElementById("symptomsList");
     symptomsList.innerHTML = Object.keys(SYMPTOMS_OPTIONS).map(key =>
-        `<option value="${getSymptomDescription(SYMPTOMS_OPTIONS[key])}"></option>`
+        `<option value="${getSymptomCodeDescription(SYMPTOMS_OPTIONS[key])}"></option>`
     );
 }
 
@@ -302,7 +236,7 @@ const updateSymptomsGrid = (fhirSearchParams) => {
 
     const filter = fhirSearchParams ? fhirSearchParams : new FHIRSearchParams();
     filter._count = PAGE_SIZE;
-    filter._sort = "-date";
+    filter._sort = "-_id";
     getSymptoms(filter).then(symptoms => {
         console.log(symptoms);
         drawSymptoms(divSymptoms, symptoms);
@@ -317,9 +251,10 @@ const defaultOkHandling = () => {
 }
 
 const defaultErrorhandling = (error) => {
-    error.text().then(msg => {
-        showMsg(msg || `${error.statusText} (${error.status})`);
-    });
+    // error.text().then(msg => {
+    //     showMsg(msg || `${error.statusText} (${error.status})`);
+    // });
+    console.error(error)
 }
 
 const getSymptomOption = () => {
@@ -331,11 +266,48 @@ const getSymptomOption = () => {
     if (!symptom) {
         throw new Error(`Symptom unknow: ${symptomId}`)
     }
-    if (symptomId == "Generic complaint") {
-        const genericSymptom = document.getElementById("genericSymptom");
-        symptom.text = genericSymptom.value || symptom.text;
-    }
     return symptom;
+}
+
+const setSymptomValue = (observation) => {
+    const symptomId = document.getElementById("symptomsSelector").value;
+    const genericSymptom = document.getElementById("genericSymptom");
+    if (symptomId == GENERIC_SYMPTOM) {
+        genericSymptom.value = observation.valueString;
+    } else if (symptomId == BODY_WEIGHT) {
+        genericSymptom.value = observation.valueQuantity.value;
+    } else if (symptomId == BODY_HEIGTH) {
+        genericSymptom.value = observation.valueQuantity.value;
+    }
+}
+
+const getSymptomValue = () => {
+    const symptomId = document.getElementById("symptomsSelector").value;
+    const genericSymptom = document.getElementById("genericSymptom");
+    if (symptomId == GENERIC_SYMPTOM) {
+        return {
+            "valueString": genericSymptom.value
+        };
+    } else if (symptomId == BODY_WEIGHT) {
+        return {
+            "valueQuantity": {
+                "value": parseFloat(genericSymptom.value),
+                "unit": "kg",
+                "system": "http://unitsofmeasure.org",
+                "code": "kg"
+            }
+        };
+    } else if (symptomId == BODY_HEIGTH) {
+        return {
+            "valueQuantity": {
+                "value": parseFloat(genericSymptom.value),
+                "unit": "m",
+                "system": "http://unitsofmeasure.org",
+                "code": "m"
+            }
+        };
+    }
+    return;
 }
 
 const getSymptomDateTime = () => {
@@ -375,6 +347,9 @@ const drawNavLabel = () => {
 const clearForm = () => {
     const symptomsSelector = document.getElementById("symptomsSelector");
     symptomsSelector.value = "";
+    
+    const genericSymptom = document.getElementById("genericSymptom");
+    genericSymptom.value = "";
 
     const dateSymptom = document.getElementById("dateSymptom");
     dateSymptom.value = new Date().toISOString().split("T")[0];

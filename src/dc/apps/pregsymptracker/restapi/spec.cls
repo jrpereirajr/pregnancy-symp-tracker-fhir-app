@@ -24,7 +24,7 @@ XData OpenAPI [ MimeType = application/json ]
       "post":{
         "operationId":"PostSymptom",
         "x-ISC_RequiredResource":[
-          "AppSymptoms:read"
+          "AppSymptoms:write"
         ],
         "security":[
           {
@@ -103,7 +103,7 @@ XData OpenAPI [ MimeType = application/json ]
       "put":{
         "operationId":"PutSymptom",
         "x-ISC_RequiredResource":[
-          "AppSymptoms:read"
+          "AppSymptoms:write"
         ],
         "security":[
           {
@@ -144,7 +144,7 @@ XData OpenAPI [ MimeType = application/json ]
       "delete":{
         "operationId":"DeleteSymptom",
         "x-ISC_RequiredResource":[
-          "AppSymptoms:read"
+          "AppSymptoms:write"
         ],
         "security":[
           {
@@ -223,6 +223,100 @@ XData OpenAPI [ MimeType = application/json ]
           }
         ],
         "description":"Retrieves a list with the Patient symptoms handled by the application",
+        "parameters":[
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
+    "/symptoms/alert/bmi/obesity":{
+      "get":{
+        "operationId":"GetBMIAlerts",
+        "x-ISC_RequiredResource":[
+          "AppSymptoms:read"
+        ],
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Retrieves the current patient's BMI values that are in the CDC ranges of obesity (https://www.cdc.gov/obesity/basics/adult-defining.html#:~:text=If%20your%20BMI%20is%20less,falls%20within%20the%20obesity%20range.)",
+        "parameters":[
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
+    "/doctor/patients":{
+      "get":{
+        "operationId":"GetDoctorPatientsList",
+        "x-ISC_RequiredResource":[
+          "AppAccessDoctorPatients:read"
+        ],
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Get the patientes of the current logged doctor",
+        "parameters":[
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
+    "/doctor/patient/symptoms":{
+      "get":{
+        "operationId":"GetDoctorPatientSymptomsList",
+        "x-ISC_RequiredResource":[
+          "AppAccessDoctorPatients:read"
+        ],
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Get the symptoms of the doctor's patients",
+        "parameters":[
+          {
+            "in":"query",
+            "name":"PatientId",
+            "required":true,
+            "type":"integer"
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"OK"
+          }
+        }
+      }
+    },
+    "/doctor/alert/bmi/obesity":{
+      "get":{
+        "operationId":"GetDoctorBMIAlerts",
+        "x-ISC_RequiredResource":[
+          "AppAccessDoctorPatients:read"
+        ],
+        "security":[
+          {
+            "basicAuth":[
+            ]
+          }
+        ],
+        "description":"Retrieves the current doctor's patients BMI values that are in the CDC ranges of obesity (https://www.cdc.gov/obesity/basics/adult-defining.html#:~:text=If%20your%20BMI%20is%20less,falls%20within%20the%20obesity%20range.)",
         "parameters":[
         ],
         "responses":{

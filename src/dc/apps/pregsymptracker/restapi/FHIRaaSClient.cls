@@ -9,10 +9,26 @@ Method CreateRequest()
     })
 }
 
+Method HTTPPost(pPath As %String, pBody As %DynamicObject) As %Net.HttpResponse
+{
+    Set response = ##super(pPath, pBody)
+    Set bmiHandler = ##class(dc.apps.pregsymptracker.restapi.BMIFHIRHandler).%New()
+    Set pBody = bmiHandler.ProcessFHIRMessage(pBody)
+    Return response
+}
+
+Method HTTPPut(pPath As %String, pBody As %DynamicObject) As %Net.HttpResponse
+{
+    Set response = ##super(pPath, pBody)
+    Set bmiHandler = ##class(dc.apps.pregsymptracker.restapi.BMIFHIRHandler).%New()
+    Set pBody = bmiHandler.ProcessFHIRMessage(pBody)
+    Return response
+}
+
 ClassMethod Test()
 {
     Set o = ..%New()
-    Set o.Server = "fhir.fkwlwiygbul2.static-test-account.isccloud.io"
+    Set o.Server = "fhir.ghim09twjq5g.static-test-account.isccloud.io"
     Set o.Port = 443
     Set o.UseHTTPS = 1
     Set o.SSLConfig = "default"

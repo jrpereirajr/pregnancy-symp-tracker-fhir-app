@@ -3,13 +3,13 @@
   <Document name="pregnancy-symp-tracker-fhir-app.ZPM">
     <Module>
       <Name>pregnancy-symp-tracker-fhir-app</Name>
-      <Version>1.0.16</Version>
+      <Version>1.0.36</Version>
       <Description>An example of how to FHIR for help pregnants to track their symptoms and share with health caregivers</Description>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="dc.apps.pregsymptracker.PKG"/>
       <UnitTest Name="/src" Package="tests.unittest.dc.apps.pregsymptracker" Phase="test"/>
-      <CSPApplication CookiePath="/csp/preg-symp-tracker/" DefaultTimeout="900" DeployPath="${cspdir}/${namespace}/" Description="" MatchRoles=":${dbrole}" PasswordAuthEnabled="1" Recurse="1" ServeFiles="1" ServeFilesTimeout="3600" SourcePath="/src/web" UnauthenticatedEnabled="0" Url="/csp/preg-symp-tracker" UseSessionCookie="2"/>
+      <CSPApplication CookiePath="/csp/preg-symp-tracker/" DefaultTimeout="900" DeployPath="${cspdir}/${namespace}/" Description="" MatchRoles=":${dbrole}" PasswordAuthEnabled="1" Recurse="1" ServeFiles="1" ServeFilesTimeout="3600" SourcePath="/src/web" UnauthenticatedEnabled="0" Url="/csp/preg-symp-tracker" UseSessionCookie="2" CustomErrorPage="%CSP.Error.cls"/>
       <CSPApplication CookiePath="/csp/preg-symp-tracker/" DefaultTimeout="900" DispatchClass="dc.apps.pregsymptracker.restapi.disp" MatchRoles=":${dbrole}" PasswordAuthEnabled="1" Recurse="1" ServeFiles="1" ServeFilesTimeout="3600" UnauthenticatedEnabled="0" Url="/csp/preg-symp-tracker/api" UseSessionCookie="2"/>
       <Dependencies>
         <ModuleReference>
