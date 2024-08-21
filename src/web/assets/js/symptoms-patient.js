@@ -156,13 +156,13 @@ const getSymptomDescription = (symptom) => {
 
 const drawSymptoms = (el, symptoms) => {
     el.innerHTML = symptoms.map(symptom => `
-    <li id="liSymptom${symptom.resource.id}">
+    <li>
        <div class="timeline-dots border-primary"></div>
-       <h6 class="">${getSymptomDescription(symptom)} <span class="badge badge-danger"></span></h6>
-       <small class="mt-1">${symptom.resource.effectiveDateTime}</small>
+       <h6 class="">${getSymptomDescription(symptom.code)}</h6>
+       <small class="mt-1">${symptom.effectiveDateTime}</small>
        <div>
-          <a href="#void" onclick="editSymptom(${symptom.resource.id})" class="btn iq-bg-primary">Edit</a>
-          <a href="#void" onclick="removeSymptom(${symptom.resource.id})" class="btn iq-bg-danger">Delete</a>
+          <a href="#void" onclick="editSymptom(${symptom.id})" class="btn iq-bg-primary">Edit</a>
+          <a href="#void" onclick="removeSymptom(${symptom.id})" class="btn iq-bg-danger">Delete</a>
        </div>
     </li>
     </table>
